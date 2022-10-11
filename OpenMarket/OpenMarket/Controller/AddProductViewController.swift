@@ -57,9 +57,9 @@ class AddProductViewController: UIViewController {
         
         switch viewMode {
         case .add:
-            navigationItem.title = "상품등록"
+            navigationItem.title = MarketInfo.addProductTitle
         case .edit:
-            navigationItem.title = "상품수정"
+            navigationItem.title = MarketInfo.editProductTitle
         }
         
         navigationItem.leftBarButtonItem = cancelBarButton
@@ -180,7 +180,7 @@ extension AddProductViewController: UIImagePickerControllerDelegate, UINavigatio
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         var selectedImage = UIImage()
         
-        guard dataSource.count != 6 else {
+        guard imageParams.count != ProductImageInfo.numberOfMax else {
             picker.dismiss(animated: true, completion: nil)
             showAlert(title: "사진 등록 불가능", message: "사진은 최대 5장까지 가능합니다.")
             return
@@ -207,7 +207,7 @@ extension AddProductViewController: UIImagePickerControllerDelegate, UINavigatio
         var imageDataSize = imageData.count
         var scale = 0.9
         
-        while imageDataSize >= 300 * 1024 {
+        while imageDataSize >= ProductImageInfo.maximumCapacity * 1024 {
             imageData = image.jpegData(compressionQuality: scale) ?? Data()
             imageDataSize = imageData.count
             scale -= 0.1

@@ -57,7 +57,7 @@ struct Vendor: Decodable {
 
 struct ProductImage: Decodable {
     let id: Int
-    let `url`: String
+    let url: String
     let thumbnailURL: String
     let succeed: Bool
     let issuedAt: String

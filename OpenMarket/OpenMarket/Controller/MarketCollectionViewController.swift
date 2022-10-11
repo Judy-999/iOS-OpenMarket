@@ -24,7 +24,7 @@ final class MarketCollectionViewController: UICollectionViewController {
     
     // MARK: UI
     private let segmentedControl: UISegmentedControl = {
-        let segmentedControl = UIKit.UISegmentedControl(items: ["LIST", "GRID"])
+        let segmentedControl = UIKit.UISegmentedControl(items: [ProductListType.list, ProductListType.grid])
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.selectedSegmentTintColor = .systemBlue
         segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
