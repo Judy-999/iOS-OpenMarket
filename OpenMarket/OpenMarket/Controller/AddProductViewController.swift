@@ -8,13 +8,18 @@
 import UIKit
 
 class AddProductViewController: UIViewController {
+    // MARK: Inner types
+    private enum ViewMode {
+        case add, edit
+    }
+    
     // MARK: Properties
     private let productView = AddProductView()
     private var dataSource: [UIImage] = []
     private var imagePicker: UIImagePickerController?
     private var imageParams: [ImageParam] = []
     private lazy var viewConstraint = productView.entireStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -260)
-    private var viewModeTitle = "상품등록"
+    private var viewMode: ViewMode = .add
     private var productNumber: Int?
     
     override func loadView() {
@@ -36,15 +41,27 @@ class AddProductViewController: UIViewController {
             dataSource.append(cachedImage)
         }
         productView.collectionView.reloadData()
-        viewModeTitle = "상품수정"
+        viewMode = .edit
     }
     
     //MARK: configure
     private func configureUI() {
-        let cancelBarButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButtonDidTapped))
-        let doneBarButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(updateButtonDidTapped))
+        let cancelBarButton = UIBarButtonItem(title: "Cancel",
+                                              style: .plain,
+                                              target: self,
+                                              action: #selector(cancelButtonDidTapped))
+        let doneBarButton = UIBarButtonItem(title: "Done",
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(updateButtonDidTapped))
         
-        navigationItem.title = viewModeTitle
+        switch viewMode {
+        case .add:
+            navigationItem.title = "상품등록"
+        case .edit:
+            navigationItem.title = "상품수정"
+        }
+        
         navigationItem.leftBarButtonItem = cancelBarButton
         navigationItem.rightBarButtonItem = doneBarButton
         navigationItem.setHidesBackButton(true, animated: false)
@@ -84,14 +101,10 @@ class AddProductViewController: UIViewController {
             return
         }
         
-        if viewModeTitle == "상품등록" {
-            guard dataSource.count != 1 else {
-                showAlert(title: "상품 등록 불가", message: "최소 1장 이상의 사진을 넣어주십시오.")
-                return
-            }
-            
+        switch viewMode {
+        case .add:
             postParam(paramManager, param, sessionManager)
-        } else {
+        case .edit:
             patchParam(paramManager, param, sessionManager)
         }
     }
@@ -113,6 +126,11 @@ class AddProductViewController: UIViewController {
     }
     
     private func postParam(_ paramManager: ParamManager, _ param: Param, _ sessionManager: URLSessionManager) {
+        guard dataSource.count != 1 else {
+            showAlert(title: "상품 등록 불가", message: "최소 1장 이상의 사진을 넣어주십시오.")
+            return
+        }
+        
         let dataElement = paramManager.combineParamForPost(param: param, imageParams: imageParams)
         
         sessionManager.postData(dataElement: dataElement) { result in
@@ -153,9 +171,7 @@ extension AddProductViewController: UICollectionViewDataSource, UICollectionView
     private func showAlert(title: String, message: String) {
         let failureAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         failureAlert.addAction(UIAlertAction(title: "확인", style: .default))
-        DispatchQueue.main.async {
-            self.present(failureAlert, animated: true)
-        }
+        self.present(failureAlert, animated: true)
     }
 }
 
