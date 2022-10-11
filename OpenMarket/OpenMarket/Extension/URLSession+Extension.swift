@@ -1,5 +1,5 @@
 //
-//  Extension.swift
+//  URLSession+Extension.swift
 //  OpenMarket
 //
 //  Created by 주디, 재재 on 2022/07/12.
