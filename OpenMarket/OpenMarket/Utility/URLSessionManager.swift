@@ -14,11 +14,11 @@ enum DataTaskError: Error {
 
 struct SubURL {
     func pageURL(number: Int, countOfItems: Int) -> String {
-        return "https://market-training.yagom-academy.kr/api/products?page_no=\(number)&items_per_page=\(countOfItems)"
+        return "https://openmarket.yagom-academy.kr/api/products?page_no=\(number)&items_per_page=\(countOfItems)"
     }
     
     func productURL(productNumber: Int) -> String {
-        return "https://market-training.yagom-academy.kr/api/products/\(productNumber)"
+        return "https://openmarket.yagom-academy.kr/api/products/\(productNumber)"
     }
 }
 
@@ -94,7 +94,7 @@ final class URLSessionManager {
     
     func postData(dataElement: [[String : Any]], completionHandler: @escaping (Result<Data, DataTaskError>) -> Void) {
         let boundary = "Boundary-\(UUID().uuidString)"
-        guard let url = URL(string: "https://market-training.yagom-academy.kr/api/products") else { return }
+        guard let url = URL(string: "https://openmarket.yagom-academy.kr/api/products") else { return }
         var request = URLRequest(url: url)
         
         request.addValue("\(VendorInfo.identifier)", forHTTPHeaderField: "identifier")
@@ -108,7 +108,7 @@ final class URLSessionManager {
     func patchData(productNumber: Int, dataElement: String, completionHandler: @escaping (Result<Data, DataTaskError>) -> Void) {
         guard let postData = dataElement.data(using: .utf8) else { return }
 
-        guard let url = URL(string: "https://market-training.yagom-academy.kr/api/products/\(productNumber)") else { return }
+        guard let url = URL(string: "https://openmarket.yagom-academy.kr/api/products/\(productNumber)") else { return }
         var request = URLRequest(url: url)
         
         request.addValue("\(VendorInfo.identifier)", forHTTPHeaderField: "identifier")
