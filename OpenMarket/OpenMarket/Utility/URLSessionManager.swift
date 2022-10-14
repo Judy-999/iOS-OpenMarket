@@ -122,7 +122,7 @@ final class URLSessionManager {
         let parameters = "{\"secret\": \"\(vendorSecret)\"}"
         guard let postData = parameters.data(using: .utf8) else { return }
         
-        guard let url = URL(string: "https://market-training.yagom-academy.kr/api/products/\(productNumber)/secret") else { return }
+        guard let url = URL(string: "https://openmarket.yagom-academy.kr/api/products/\(productNumber)/archived") else { return }
         var request = URLRequest(url: url)
         
         request.addValue("\(VendorInfo.identifier)", forHTTPHeaderField: "identifier")
@@ -133,9 +133,9 @@ final class URLSessionManager {
         dataTask(request: request, completionHandler: completionHandler)
     }
     
-    func deleteData(secretKey: Data, productNumber: Int, completionHandler: @escaping (Result<Data, DataTaskError>) -> Void) {
-        guard let secretKey = String(data: secretKey, encoding: .utf8) else { return }
-        guard let url = URL(string: "https://market-training.yagom-academy.kr/api/products/\(productNumber)/" + secretKey) else { return }
+    func deleteData(deleteURI: Data, completionHandler: @escaping (Result<Data, DataTaskError>) -> Void) {
+        guard let deleteKey = String(data: deleteURI, encoding: .utf8) else { return }
+        guard let url = URL(string: "https://openmarket.yagom-academy.kr" + deleteKey) else { return }
         var request = URLRequest(url: url)
         
         request.addValue("\(VendorInfo.identifier)", forHTTPHeaderField: "identifier")

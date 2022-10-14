@@ -64,7 +64,7 @@ class ProductDetailCollectionViewController: UICollectionViewController {
             sessionManager.inquireSecretKey(vendorSecret: inputSecret, productNumber: productNumber) { result in
                 switch result {
                 case .success(let data):
-                    sessionManager.deleteData(secretKey: data, productNumber: productNumber) { result in
+                    sessionManager.deleteData(deleteURI: data) { result in
                         switch result {
                         case .success(_):
                             DispatchQueue.main.async {
