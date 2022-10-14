@@ -19,22 +19,18 @@ struct Page: Decodable {
     let hasPrevious: Bool
     
     private enum CodingKeys: String, CodingKey {
-        case pageNumber = "page_no"
-        case itemsPerPage = "items_per_page"
-        case totalCount = "total_count"
-        case offset
-        case limit
-        case pages
-        case lastPage = "last_page"
-        case hasNext = "has_next"
-        case hasPrevious = "has_prev"
+        case itemsPerPage, totalCount, offset, limit, pages, lastPage, hasNext
+        case pageNumber = "pageNo"
+        case hasPrevious = "hasPrev"
     }
 }
 
 struct Product: Decodable {
     let id: Int
     let vendorId: Int
+    let vendorName: String
     let name: String
+    let description: String
     let thumbnail: String
     let currency: Currency
     let price: Double
@@ -45,17 +41,11 @@ struct Product: Decodable {
     let issuedAt: String
     
     private enum CodingKeys: String, CodingKey {
-        case id
+        case id, vendorName, name, description, thumbnail, currency, price, stock
         case vendorId = "vendor_id"
-        case name
-        case thumbnail
-        case currency
-        case price
         case bargainPrice = "bargain_price"
         case discountedPrice = "discounted_price"
-        case stock
         case createdAt = "created_at"
         case issuedAt = "issued_at"
     }
 }
-
