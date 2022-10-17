@@ -139,11 +139,8 @@ class AddProductViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.navigationController?.popViewController(animated: true)
                 }
-            case .failure(let error):
-                print(error)
-                DispatchQueue.main.async {
-                    self.showAlert(title: "서버 통신 실패", message: "데이터를 올리지 못했습니다.")
-                }
+            case .failure(_):
+                self.showAlert(title: "서버 통신 실패", message: "데이터를 올리지 못했습니다.")
             }
         }
     }
@@ -169,9 +166,11 @@ extension AddProductViewController: UICollectionViewDataSource, UICollectionView
     }
     
     private func showAlert(title: String, message: String) {
-        let failureAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        failureAlert.addAction(UIAlertAction(title: "확인", style: .default))
-        self.present(failureAlert, animated: true)
+        DispatchQueue.main.async {
+            let failureAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            failureAlert.addAction(UIAlertAction(title: "확인", style: .default))
+            self.present(failureAlert, animated: true)
+        }
     }
 }
 
