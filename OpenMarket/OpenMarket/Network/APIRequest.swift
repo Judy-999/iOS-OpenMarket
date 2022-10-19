@@ -23,6 +23,11 @@ enum URLPath: String {
     case product = "/api/products"
 }
 
+enum Query {
+    static let page = "page_no"
+    static let itemPerPage = "items_per_page"
+}
+                    
 protocol APIRequest {
     var method: HTTPMethod { get }
     var baseURL: String { get }
@@ -65,8 +70,8 @@ extension APIRequest {
     }
 }
 
-extension APIRequest {
-    private func makeBody(parameters: [[String : Any]], boundary: String) -> Data? {
+struct MultipartBodyManager {
+    func makeBody(parameters: [[String : Any]], _ boundary: String) -> Data? {
         var body = Data()
         
         for param in parameters {
