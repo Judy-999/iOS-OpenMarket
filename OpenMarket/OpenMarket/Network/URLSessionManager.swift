@@ -64,7 +64,7 @@ final class URLSessionManager {
             if paramType == "text"{
                 guard let paramValue = param["value"] as? String,
                       let value = "\r\n\r\n\(paramValue)\r\n".data(using: .utf8) else { return nil }
-                
+                print(paramValue)
                 body.append(contentsOf: boundary)
                 body.append(contentsOf: disposition)
                 body.append(contentsOf: value)
