@@ -12,7 +12,12 @@ class SessionImageView: UIImageView {
         let sessionManager = URLSessionManager(session: URLSession.shared)
         let cachedKey = NSString(string: url)
         
-        sessionManager.receiveData(baseURL: url) { result in
+        guard let imageRequest = RequestBuilder().setMethod(.get)
+            .setBaseURL(url)
+            .setPath("")
+            .buildRequest() else { return }
+                
+        sessionManager.dataTask(request: imageRequest) { result in
             switch result {
             case .success(let data):
                 guard let imageData = UIImage(data: data) else { return }

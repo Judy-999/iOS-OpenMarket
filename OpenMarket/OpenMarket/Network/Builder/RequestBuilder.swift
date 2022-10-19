@@ -8,7 +8,7 @@
 import Foundation
 
 final class RequestBuilder {
-    private let baseURL: String
+    private var baseURL: String
     private var method: HTTPMethod?
     private var path: String?
     private var query: [String: Any]?
@@ -17,6 +17,11 @@ final class RequestBuilder {
     
     init() {
         self.baseURL = URLHost.url
+    }
+    
+    func setBaseURL(_ url: String) -> RequestBuilder  {
+        self.baseURL = url
+        return self
     }
     
     func setMethod(_ method: HTTPMethod) -> RequestBuilder {
