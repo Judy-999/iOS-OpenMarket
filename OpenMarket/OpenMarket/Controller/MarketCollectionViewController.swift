@@ -106,10 +106,10 @@ final class MarketCollectionViewController: UICollectionViewController {
     }
     
     private func receivePageData() {
-        let subURL = SubURL().pageURL(number: 1, countOfItems: 100)
+        guard let getRequest = RequestDirector().createGetRequest() else { return }
         
         LoadingIndicator.showLoading(on: view)
-        sessionManager.receiveData(baseURL: subURL) { result in
+        sessionManager.dataTask(request: getRequest) { result in 
             switch result {
             case .success(let data):
                 self.decodeResult(data)

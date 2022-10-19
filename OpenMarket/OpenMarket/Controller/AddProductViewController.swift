@@ -112,8 +112,10 @@ class AddProductViewController: UIViewController {
     private func patchParam(_ paramManager: ParamManager, _ param: Param, _ sessionManager: URLSessionManager) {
         let dataElement = paramManager.combineParamForPatch(param: param)
         guard let productNumber = productNumber else { return }
+        guard let patchRequest = RequestDirector().createPatchRequest(productNumber: productNumber,
+                                                             dataElement: dataElement) else { return }
         
-        sessionManager.patchData(productNumber: productNumber, dataElement: dataElement) { result in
+        sessionManager.dataTask(request: patchRequest) { result in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
@@ -133,7 +135,11 @@ class AddProductViewController: UIViewController {
         
         let dataElement = paramManager.combineParamForPost(param: param, imageParams: imageParams)
         
-        sessionManager.postData(dataElement: dataElement) { result in
+        guard let postRequest = RequestDirector().createPostRequest(with: dataElement) else {
+            return
+        }
+        
+        sessionManager.dataTask(request: postRequest) { result in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {

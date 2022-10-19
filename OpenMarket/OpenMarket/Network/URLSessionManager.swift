@@ -8,6 +8,7 @@
 import UIKit
 
 enum DataTaskError: Error {
+    case invalidRequest
     case incorrectResponse
     case invalidData
 }
@@ -28,10 +29,15 @@ final class URLSessionManager {
     init(session: URLSessionProtocol) {
         self.session = session
     }
-    
-    private func dataTask(request: URLRequest, completionHandler: @escaping (Result<Data, DataTaskError>) -> Void) {
+
+    func dataTask(request: APIRequest, completionHandler: @escaping (Result<Data, DataTaskError>) -> Void) {
+        guard let request = request.urlRequest else {
+            return completionHandler(.failure(.invalidRequest))
+        }
+        
         session.dataTask(with: request) { data, urlResponse, error in
-            guard let response = urlResponse as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+            guard let response = urlResponse as? HTTPURLResponse,
+                    (200...299).contains(response.statusCode) else {
                 return completionHandler(.failure(.incorrectResponse))
             }
             

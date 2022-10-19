@@ -61,10 +61,15 @@ class ProductDetailCollectionViewController: UICollectionViewController {
             guard let inputSecret = checkAlert.textFields?.first?.text else { return }
             guard let productNumber = productNumber else { return }
             
-            sessionManager.inquireSecretKey(vendorSecret: inputSecret, productNumber: productNumber) { result in
+            guard let deleteURIRequest = RequestDirector().createDeleteURIRequest(vendorSecret: inputSecret,
+                                                                                  productNumber: productNumber) else { return }
+            
+            sessionManager.dataTask(request: deleteURIRequest) { result in
                 switch result {
                 case .success(let data):
-                    sessionManager.deleteData(deleteURI: data) { result in
+                    guard let deleteRequest = RequestDirector().createDeleteRequest(with: data) else { return }
+                    
+                    sessionManager.dataTask(request: deleteRequest) { result in
                         switch result {
                         case .success(_):
                             DispatchQueue.main.async {
