@@ -32,7 +32,7 @@ protocol APIRequest {
     var method: HTTPMethod { get }
     var baseURL: String { get }
     var path: String { get }
-    var query: [String: Any] { get }
+    var query: [String: Any]? { get }
     var body: Data? { get }
     var headers: [String: String]? { get }
 }
@@ -41,7 +41,7 @@ struct MarketRequest: APIRequest {
     var method: HTTPMethod
     var baseURL: String
     var path: String
-    var query: [String: Any]
+    var query: [String: Any]?
     var body: Data?
     var headers: [String: String]?
 }
@@ -50,7 +50,9 @@ extension APIRequest {
     var url: URL? {
         var urlComponents = URLComponents(string: baseURL + path)
         
-        urlComponents?.queryItems = query.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
+        if let query = query {
+            urlComponents?.queryItems = query.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
+        }
         
         return urlComponents?.url
     }

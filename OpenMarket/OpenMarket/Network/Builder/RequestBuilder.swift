@@ -45,7 +45,7 @@ final class RequestBuilder {
     }
     
     func buildRequest() -> MarketRequest? {
-        guard let method = method, let path = path, let query = query else {
+        guard let method = method, let path = path else {
             return nil
         }
 
