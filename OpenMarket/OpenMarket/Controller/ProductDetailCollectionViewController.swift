@@ -134,11 +134,12 @@ class ProductDetailCollectionViewController: UICollectionViewController {
     // MARK: Data & Snapshot
     private func receiveDetailData() {
         let sessionManager = URLSessionManager(session: URLSession.shared)
+        
         guard let productNumber = productNumber else { return }
-        let subURL = SubURL().productURL(productNumber: productNumber)
+        guard let productDetailRequest = RequestDirector().createGetDetailRequest(productNumber) else { return }
         
         LoadingIndicator.showLoading(on: view)
-        sessionManager.receiveData(baseURL: subURL) { result in
+        sessionManager.dataTask(request: productDetailRequest) { result in
             switch result {
             case .success(let data):
                 self.decodeResult(data)

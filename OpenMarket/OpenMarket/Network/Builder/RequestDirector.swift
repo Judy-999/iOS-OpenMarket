@@ -23,6 +23,14 @@ struct RequestDirector {
         return getRequest
     }
     
+    func createGetDetailRequest(_ productNumber: Int) -> MarketRequest? {
+        let getDetailRequest = builder.setMethod(.get)
+            .setPath(URLPath.product.rawValue + "/\(productNumber)")
+            .buildRequest()
+        
+        return getDetailRequest
+    }
+    
     func createPostRequest(with dataElement: [[String : Any]]) -> MarketRequest? {
         let boundary = "Boundary-\(UUID().uuidString)"
         let postRequest = builder.setMethod(.post)
