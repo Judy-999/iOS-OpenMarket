@@ -7,27 +7,6 @@
 
 import Foundation
 
-enum HTTPMethod: String {
-    case get = "GET"
-    case post = "POST"
-    case patch = "PATCH"
-    case delete = "DELETE"
-}
-
-enum URLHost {
-    static let url = "https://openmarket.yagom-academy.kr"
-}
-
-enum URLPath: String {
-    case healthChecker = "/healthChecker"
-    case product = "/api/products"
-}
-
-enum Query {
-    static let page = "page_no"
-    static let itemPerPage = "items_per_page"
-}
-                    
 protocol APIRequest {
     var method: HTTPMethod { get }
     var baseURL: String { get }
@@ -35,15 +14,6 @@ protocol APIRequest {
     var query: [String: Any]? { get }
     var body: Data? { get }
     var headers: [String: String]? { get }
-}
-
-struct MarketRequest: APIRequest {
-    var method: HTTPMethod
-    var baseURL: String
-    var path: String
-    var query: [String: Any]?
-    var body: Data?
-    var headers: [String: String]?
 }
 
 extension APIRequest {
@@ -70,47 +40,4 @@ extension APIRequest {
         
         return urlRequest
     }
-}
-
-struct MultipartBodyManager {
-    func makeBody(parameters: [[String : Any]], _ boundary: String) -> Data? {
-        var body = Data()
-        
-        for param in parameters {
-            guard let paramName = param["key"] as? String else { return nil }
-            let paramType = param["type"] as? String
-            
-            guard let boundary = "--\(boundary)\r\n".data(using: .utf8),
-                  let disposition = "Content-Disposition:form-data; name=\"\(paramName)\"".data(using: .utf8) else { return nil }
-            if paramType == "text"{
-                guard let paramValue = param["value"] as? String,
-                      let value = "\r\n\r\n\(paramValue)\r\n".data(using: .utf8) else { return nil }
-                print(paramValue)
-                body.append(contentsOf: boundary)
-                body.append(contentsOf: disposition)
-                body.append(contentsOf: value)
-            } else {
-                guard let imageParams = param["images"] as? [ImageParam] else { return nil }
-                
-                for param in imageParams {
-                    guard let fileName = "; filename=\"\(param.imageName)\"\r\n".data(using: .utf8),
-                          let contentType = "Content-Type: image/\(param.imageType)\r\n\r\n".data(using: .utf8),
-                          let space = "\r\n".data(using: .utf8) else { return nil }
-                    
-                    body.append(contentsOf: boundary)
-                    body.append(contentsOf: disposition)
-                    body.append(contentsOf: fileName)
-                    body.append(contentsOf: contentType)
-                    body.append(contentsOf: param.imageData)
-                    body.append(contentsOf: space)
-                }
-            }
-        }
-        
-        guard let lastBoundary = "--\(boundary)--\r\n".data(using: .utf8) else { return nil }
-        body.append(contentsOf: lastBoundary)
-
-        return body
-    }
-
 }

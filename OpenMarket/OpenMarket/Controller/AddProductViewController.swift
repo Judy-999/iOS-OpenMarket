@@ -135,9 +135,7 @@ class AddProductViewController: UIViewController {
         
         let dataElement = paramManager.combineParamForPost(param: param, imageParams: imageParams)
         
-        guard let postRequest = RequestDirector().createPostRequest(with: dataElement) else {
-            return
-        }
+        guard let postRequest = RequestDirector().createPostRequest(with: dataElement) else { return }
         
         sessionManager.dataTask(request: postRequest) { result in
             switch result {

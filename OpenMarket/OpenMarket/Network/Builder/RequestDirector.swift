@@ -47,7 +47,7 @@ struct RequestDirector {
         guard let postData = dataElement.data(using: .utf8) else { return nil }
         
         let patchRequest = builder.setMethod(.patch)
-            .setPath(URLPath.product.rawValue + "\(productNumber)")
+            .setPath(URLPath.product.rawValue + "/\(productNumber)")
             .setHeaders(["identifier": "\(VendorInfo.identifier)"])
             .setBody(postData)
             .buildRequest()
