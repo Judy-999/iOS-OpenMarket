@@ -48,7 +48,8 @@ struct RequestDirector {
         
         let patchRequest = builder.setMethod(.patch)
             .setPath(URLPath.product.rawValue + "/\(productNumber)")
-            .setHeaders(["identifier": "\(VendorInfo.identifier)"])
+            .setHeaders(["identifier": "\(VendorInfo.identifier)",
+                         "Content-Type": "application/json"])
             .setBody(postData)
             .buildRequest()
         

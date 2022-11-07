@@ -37,7 +37,7 @@ struct ParamManager {
     }
     
     func combineParamForPatch(param: Param) -> String {
-        let dataElement = "{\n\"secret\": \"\(VendorInfo.secret)\",\n\"name\": \"\(param.productName)\"\n,\n\"price\": \(param.price)\n,\n\"discounted_price\": \(param.discountedPrice)\n,\n\"stock\": \(param.stock)\n,\n\"currency\": \"\(param.currency)\"\n,\n\"descriptions\": \"\(param.description)\"\n}"
+        let dataElement = "{\"secret\": \"\(VendorInfo.secret)\", \"name\": \"\(param.productName)\", \"price\": \(param.price), \"discounted_price\": \(param.discountedPrice), \"stock\": \(param.stock), \"currency\": \"\(param.currency)\", \"description\": \"\(param.description)\"}"
         
         return dataElement
     }
