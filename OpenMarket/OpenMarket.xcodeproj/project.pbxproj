@@ -119,6 +119,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		20226831291CC602005E11CE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				20B4AB9B290F975200BF6C7A /* HTTPMethod.swift */,
+				20B4AB9D290F978500BF6C7A /* MarketRequest.swift */,
+				20226832291CC6B3005E11CE /* MultipartData.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		2072734D289905FB001AC4DA /* ViewCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,13 +154,11 @@
 		20CC8D7E28FE989200CD1613 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				20226831291CC602005E11CE /* Model */,
 				20CC8D8328FFA5C000CD1613 /* Builder */,
 				7EA083A9287D15BC00BB1740 /* URLSessionProtocol.swift */,
 				7EA083AB287D190400BB1740 /* URLSessionManager.swift */,
-				20B4AB9B290F975200BF6C7A /* HTTPMethod.swift */,
 				20CC8D7F28FE990F00CD1613 /* APIRequest.swift */,
-				20B4AB9D290F978500BF6C7A /* MarketRequest.swift */,
-				20226832291CC6B3005E11CE /* MultipartData.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
