@@ -8,43 +8,34 @@
 import Foundation
 
 struct MultipartBodyManager {
-    func makeBody(parameters: [[String : Any]], _ boundary: String) -> Data? {
+    func makeBody(parameters: [MultipartData], _ boundary: String) -> Data? {
         var body = Data()
-        
+
+        guard let fristBoundary = "--\(boundary)\r\n".data(using: .utf8) else { return nil }
+
         for param in parameters {
-            guard let paramName = param["key"] as? String else { return nil }
-            let paramType = param["type"] as? String
-            
-            guard let boundary = "--\(boundary)\r\n".data(using: .utf8),
-                  let disposition = "Content-Disposition:form-data; name=\"\(paramName)\"".data(using: .utf8) else { return nil }
-            if paramType == "text"{
-                guard let paramValue = param["value"] as? String,
-                      let value = "\r\n\r\n\(paramValue)\r\n".data(using: .utf8) else { return nil }
-                print(paramValue)
-                body.append(contentsOf: boundary)
-                body.append(contentsOf: disposition)
-                body.append(contentsOf: value)
-            } else {
-                guard let imageParams = param["images"] as? [ImageParam] else { return nil }
-                
-                for param in imageParams {
-                    guard let fileName = "; filename=\"\(param.imageName)\"\r\n".data(using: .utf8),
-                          let contentType = "Content-Type: image/\(param.imageType)\r\n\r\n".data(using: .utf8),
-                          let space = "\r\n".data(using: .utf8) else { return nil }
-                    
-                    body.append(contentsOf: boundary)
-                    body.append(contentsOf: disposition)
-                    body.append(contentsOf: fileName)
-                    body.append(contentsOf: contentType)
-                    body.append(contentsOf: param.imageData)
-                    body.append(contentsOf: space)
-                }
+            guard let disposition = "Content-Disposition:form-data; name=\"\(param.dispositionName)\"".data(using: .utf8),
+                  let value = param.data,
+                  let space = "\r\n".data(using: .utf8),
+                  let contentType = "Content-Type: \(param.contentType)\r\n\r\n".data(using: .utf8) else { return nil }
+
+            body.append(contentsOf: fristBoundary)
+            body.append(contentsOf: disposition)
+
+            if let fileName = param.fileName {
+                guard let fileName = "; filename=\"\(fileName)\"".data(using: .utf8) else { return nil }
+                body.append(contentsOf: fileName)
             }
+            
+            body.append(contentsOf: space)
+            body.append(contentsOf: contentType)
+            body.append(contentsOf: value)
+            body.append(contentsOf: space)
         }
-        
+
         guard let lastBoundary = "--\(boundary)--\r\n".data(using: .utf8) else { return nil }
         body.append(contentsOf: lastBoundary)
-
+        
         return body
     }
 }

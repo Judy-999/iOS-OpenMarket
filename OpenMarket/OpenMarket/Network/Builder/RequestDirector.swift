@@ -31,7 +31,7 @@ struct RequestDirector {
         return getDetailRequest
     }
     
-    func createPostRequest(with dataElement: [[String : Any]]) -> MarketRequest? {
+    func createPostRequest(with dataElement: [MultipartData]) -> MarketRequest? {
         let boundary = "Boundary-\(UUID().uuidString)"
         let postRequest = builder.setMethod(.post)
             .setPath(URLPath.product.rawValue)

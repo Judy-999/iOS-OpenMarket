@@ -8,13 +8,9 @@
 import Foundation
 
 struct ParamManager {
-    func combineParamForPost(param: Param, imageParams: [ImageParam]) -> [[String : Any]]{
+    func combineParamForPost(param: Param, imageParams: [ImageParam]) -> [MultipartData] {
         let description = param.description.replacingOccurrences(of: "\n", with: "\\n")
-         
-        let dataElement: [[String : Any]] = [
-            [
-                "key": "params",
-                "value": """
+        let dataValue = """
                         {
                             "name": "\(param.productName)",
                             "price": \(param.price),
@@ -22,18 +18,26 @@ struct ParamManager {
                             "stock": \(param.stock),
                             "currency": "\(param.currency)",
                             "secret": "\(param.secret)",
-                            "descriptions": "\(description)"
+                            "description": "\(description)"
                         }
-                        """,
-                "type": "text"
-            ],
-            [
-                "key": "images",
-                "images": imageParams
-            ]
-        ]
+                        """
+        var multipartDatas: [MultipartData] = []
+        let textData = MultipartData(dispositionName: "params",
+                                     data: dataValue.data(using: .utf8),
+                                     contentType: "application/json",
+                                     fileName: nil)
         
-        return dataElement
+        multipartDatas.append(textData)
+
+        imageParams.forEach {
+            let imageData = MultipartData(dispositionName: "images",
+                                          data: $0.imageData,
+                                          contentType: "image/" + $0.imageType,
+                                          fileName: $0.imageName)
+            multipartDatas.append(imageData)
+        }
+
+        return multipartDatas
     }
     
     func combineParamForPatch(param: Param) -> String {
