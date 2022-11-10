@@ -93,7 +93,7 @@ class AddProductViewController: UIViewController {
     
     @objc private func updateButtonDidTapped() {
         let sessionManager = URLSessionManager(session: URLSession.shared)
-        let paramManager = ParamManager()
+        let multipartManager = MultipartManager()
         guard let param = productView.createParam() else { return }
         
         guard param.productName != "", param.price != "", param.description != "" else {
@@ -103,14 +103,14 @@ class AddProductViewController: UIViewController {
         
         switch viewMode {
         case .add:
-            postParam(paramManager, param, sessionManager)
+            postParam(multipartManager, param, sessionManager)
         case .edit:
-            patchParam(paramManager, param, sessionManager)
+            patchParam(multipartManager, param, sessionManager)
         }
     }
     
-    private func patchParam(_ paramManager: ParamManager, _ param: Param, _ sessionManager: URLSessionManager) {
-        let dataElement = paramManager.combineParamForPatch(param: param)
+    private func patchParam(_ multipartManager: MultipartManager, _ param: Param, _ sessionManager: URLSessionManager) {
+        let dataElement = multipartManager.combineParamForPatch(param: param)
         guard let productNumber = productNumber else { return }
         guard let patchRequest = RequestDirector().createPatchRequest(productNumber: productNumber,
                                                              dataElement: dataElement) else { return }
@@ -127,13 +127,13 @@ class AddProductViewController: UIViewController {
         }
     }
     
-    private func postParam(_ paramManager: ParamManager, _ param: Param, _ sessionManager: URLSessionManager) {
+    private func postParam(_ multipartManager: MultipartManager, _ param: Param, _ sessionManager: URLSessionManager) {
         guard dataSource.count != 1 else {
             showAlert(title: "상품 등록 불가", message: "최소 1장 이상의 사진을 넣어주십시오.")
             return
         }
         
-        let dataElement = paramManager.combineParamForPost(param: param, imageParams: imageParams)
+        let dataElement = multipartManager.combineParamForPost(param: param, imageParams: imageParams)
         
         guard let postRequest = RequestDirector().createPostRequest(with: dataElement) else { return }
         

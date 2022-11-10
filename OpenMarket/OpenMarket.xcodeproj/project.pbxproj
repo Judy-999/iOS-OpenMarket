@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		20182EB92897CF5800642C9F /* SessionImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20182EB82897CF5800642C9F /* SessionImageView.swift */; };
-		20182EBB2897DDF800642C9F /* ParamManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20182EBA2897DDF800642C9F /* ParamManager.swift */; };
 		20226833291CC6B3005E11CE /* MultipartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20226832291CC6B3005E11CE /* MultipartData.swift */; };
 		204E5D58289288F800FEB07D /* Param.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E5D57289288F800FEB07D /* Param.swift */; };
 		205D32CB287D6491004CF76F /* DataDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205D32CA287D6491004CF76F /* DataDecoder.swift */; };
@@ -21,7 +20,7 @@
 		20B4AB9C290F975200BF6C7A /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B4AB9B290F975200BF6C7A /* HTTPMethod.swift */; };
 		20B4AB9E290F978500BF6C7A /* MarketRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B4AB9D290F978500BF6C7A /* MarketRequest.swift */; };
 		20B4ABA0290FA10400BF6C7A /* Namespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B4AB9F290FA10400BF6C7A /* Namespace.swift */; };
-		20B4ABA2290FA1A200BF6C7A /* MultipartBodyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B4ABA1290FA1A200BF6C7A /* MultipartBodyManager.swift */; };
+		20B4ABA2290FA1A200BF6C7A /* MultipartManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B4ABA1290FA1A200BF6C7A /* MultipartManager.swift */; };
 		20B8CD3B289144E000D4424D /* AddProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B8CD3A289144E000D4424D /* AddProductViewController.swift */; };
 		20BD32E828859A5000746181 /* MarketListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BD32E728859A5000746181 /* MarketListCollectionViewCell.swift */; };
 		20CC8D8028FE990F00CD1613 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CC8D7F28FE990F00CD1613 /* APIRequest.swift */; };
@@ -59,7 +58,6 @@
 
 /* Begin PBXFileReference section */
 		20182EB82897CF5800642C9F /* SessionImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionImageView.swift; sourceTree = "<group>"; };
-		20182EBA2897DDF800642C9F /* ParamManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParamManager.swift; sourceTree = "<group>"; };
 		20226832291CC6B3005E11CE /* MultipartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartData.swift; sourceTree = "<group>"; };
 		204E5D57289288F800FEB07D /* Param.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Param.swift; sourceTree = "<group>"; };
 		205D32CA287D6491004CF76F /* DataDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataDecoder.swift; sourceTree = "<group>"; };
@@ -72,7 +70,7 @@
 		20B4AB9B290F975200BF6C7A /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		20B4AB9D290F978500BF6C7A /* MarketRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketRequest.swift; sourceTree = "<group>"; };
 		20B4AB9F290FA10400BF6C7A /* Namespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Namespace.swift; sourceTree = "<group>"; };
-		20B4ABA1290FA1A200BF6C7A /* MultipartBodyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartBodyManager.swift; sourceTree = "<group>"; };
+		20B4ABA1290FA1A200BF6C7A /* MultipartManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartManager.swift; sourceTree = "<group>"; };
 		20B8CD3A289144E000D4424D /* AddProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewController.swift; sourceTree = "<group>"; };
 		20BD32E728859A5000746181 /* MarketListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketListCollectionViewCell.swift; sourceTree = "<group>"; };
 		20CC8D7F28FE990F00CD1613 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
@@ -169,7 +167,7 @@
 				20CC8D8128FF967400CD1613 /* RequestBuilder.swift */,
 				20CC8D8428FFA5E800CD1613 /* RequestDirector.swift */,
 				20B4AB9F290FA10400BF6C7A /* Namespace.swift */,
-				20B4ABA1290FA1A200BF6C7A /* MultipartBodyManager.swift */,
+				20B4ABA1290FA1A200BF6C7A /* MultipartManager.swift */,
 			);
 			path = Builder;
 			sourceTree = "<group>";
@@ -197,7 +195,6 @@
 				7E52E1AD2887A4070094429B /* LoadingIndicator.swift */,
 				205D32CA287D6491004CF76F /* DataDecoder.swift */,
 				7EA85D3828980903009F0F20 /* ImageCacheManager.swift */,
-				20182EBA2897DDF800642C9F /* ParamManager.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -402,7 +399,6 @@
 				20AAF95D287C0D2600E48A96 /* Currency.swift in Sources */,
 				20CC8D8228FF967400CD1613 /* RequestBuilder.swift in Sources */,
 				2072735328996E8E001AC4DA /* DetailProduct.swift in Sources */,
-				20182EBB2897DDF800642C9F /* ParamManager.swift in Sources */,
 				7EA85D3928980903009F0F20 /* ImageCacheManager.swift in Sources */,
 				20AFD96628F54F6700916A6B /* MarketInfo.swift in Sources */,
 				7EA083AA287D15BC00BB1740 /* URLSessionProtocol.swift in Sources */,
@@ -416,7 +412,7 @@
 				7EA85D3D28990BAD009F0F20 /* DetailInfoCollectionViewCell.swift in Sources */,
 				7E8CE2D22886DC95009F6C5E /* MarketGridCollectionViewCell.swift in Sources */,
 				20182EB92897CF5800642C9F /* SessionImageView.swift in Sources */,
-				20B4ABA2290FA1A200BF6C7A /* MultipartBodyManager.swift in Sources */,
+				20B4ABA2290FA1A200BF6C7A /* MultipartManager.swift in Sources */,
 				7EA083A4287C049D00BB1740 /* Product.swift in Sources */,
 				20B4ABA0290FA10400BF6C7A /* Namespace.swift in Sources */,
 				7E52D3352891427800388E37 /* AddProductView.swift in Sources */,
