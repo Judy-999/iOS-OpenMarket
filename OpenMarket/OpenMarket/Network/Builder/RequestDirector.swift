@@ -43,14 +43,12 @@ struct RequestDirector {
         return postRequest
     }
     
-    func createPatchRequest(productNumber: Int, dataElement: String) -> MarketRequest? {
-        guard let postData = dataElement.data(using: .utf8) else { return nil }
-        
+    func createPatchRequest(productNumber: Int, dataElement: Data) -> MarketRequest? {    
         let patchRequest = builder.setMethod(.patch)
             .setPath(URLPath.product.rawValue + "/\(productNumber)")
             .setHeaders(["identifier": "\(VendorInfo.identifier)",
                          "Content-Type": "application/json"])
-            .setBody(postData)
+            .setBody(dataElement)
             .buildRequest()
         
         return patchRequest

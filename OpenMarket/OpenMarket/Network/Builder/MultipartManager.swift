@@ -41,28 +41,23 @@ struct MultipartManager {
 }
 
 extension MultipartManager {
-    func combineParamForPost(param: Param, imageParams: [ImageParam]) -> [MultipartData] {
-        let description = param.description.replacingOccurrences(of: "\n", with: "\\n")
-        let dataValue = """
-                        {
-                            "name": "\(param.productName)",
-                            "price": \(param.price),
-                            "discounted_price": \(param.discountedPrice),
-                            "stock": \(param.stock),
-                            "currency": "\(param.currency)",
-                            "secret": "\(param.secret)",
-                            "description": "\(description)"
-                        }
-                        """
-        var multipartDatas: [MultipartData] = []
+    func createMultipartData(with product: RequestProduct, _ multipartImages: [MutipartImage]) -> [MultipartData] {
+        var dataa: Data = Data()
+
+        do {
+            dataa = try JSONEncoder().encode(product)
+        } catch {
+            print(error)
+        }
+        
         let textData = MultipartData(dispositionName: "params",
-                                     data: dataValue.data(using: .utf8),
+                                     data: dataa,
                                      contentType: "application/json",
                                      fileName: nil)
         
-        multipartDatas.append(textData)
+        var multipartDatas: [MultipartData] = [textData]
 
-        imageParams.forEach {
+        multipartImages.forEach {
             let imageData = MultipartData(dispositionName: "images",
                                           data: $0.imageData,
                                           contentType: "image/" + $0.imageType,
@@ -73,8 +68,14 @@ extension MultipartManager {
         return multipartDatas
     }
     
-    func combineParamForPatch(param: Param) -> String {
-        let dataElement = "{\"secret\": \"\(VendorInfo.secret)\", \"name\": \"\(param.productName)\", \"price\": \(param.price), \"discounted_price\": \(param.discountedPrice), \"stock\": \(param.stock), \"currency\": \"\(param.currency)\", \"description\": \"\(param.description)\"}"
+    func convertToPatchProducct(_ product: RequestProduct) -> Data {
+        var dataElement: Data = Data()
+        
+        do {
+            dataElement = try JSONEncoder().encode(product)
+        } catch {
+            print(error)
+        }
         
         return dataElement
     }
