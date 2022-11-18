@@ -140,13 +140,16 @@ final class AddProductView: UIView {
             stackBottomConstraint.isActive = true
     }
     
-    func createParam() -> Param? {
+    func createRequestProduct() -> RequestProduct? {
         guard let name = productNameTextfield.text,
-              let price = priceTextfield.text,
-              var discountedPrice = discountedPriceTextfield.text,
-              var stock = stockTextfield.text,
+              let priceText = priceTextfield.text,
+              let discountedPriceText = discountedPriceTextfield.text,
+              let stockText = stockTextfield.text,
               let descriptionText = descriptionTextView.text else { return nil }
 
+        let price = Double(priceText) ?? 0
+        let discountedPrice = Double(discountedPriceText) ?? 0
+        let stock = Int(stockText) ?? 0
         var currency = ""
     
         if segmentedControl.selectedSegmentIndex == 0 {
@@ -155,17 +158,9 @@ final class AddProductView: UIView {
             currency = Currency.usd.rawValue
         }
         
-        if discountedPrice == "" {
-            discountedPrice = "0"
-        }
-
-        if stock == "" {
-            stock = "0"
-        }
+        let requestProuct = RequestProduct(productName: name, price: price, discountedPrice: discountedPrice, currency: currency, stock: stock, description: descriptionText)
         
-        let param = Param(productName: name, price: price, discountedPrice: discountedPrice, currency: currency, stock: stock, description: descriptionText)
-        
-        return param
+        return requestProuct
     }
     
     func configure(data: DetailProduct) {

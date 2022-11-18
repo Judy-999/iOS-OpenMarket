@@ -2,7 +2,7 @@
 //  MultipartData.swift
 //  OpenMarket
 //
-//  Created by 김주영 on 2022/11/10.
+//  Created by Judy on 2022/11/10.
 //
 
 import Foundation
