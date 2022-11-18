@@ -42,20 +42,20 @@ struct MultipartManager {
 
 extension MultipartManager {
     func createMultipartData(with product: RequestProduct, _ multipartImages: [MutipartImage]) -> [MultipartData] {
-        var dataa: Data = Data()
-
-        do {
-            dataa = try JSONEncoder().encode(product)
-        } catch {
-            print(error)
-        }
+        var data: Data
         
-        let textData = MultipartData(dispositionName: "params",
-                                     data: dataa,
+        do {
+            data = try DataManager().encode(data: product)
+        } catch {
+            data = Data()
+        }
+     
+        let productData = MultipartData(dispositionName: "params",
+                                     data: data,
                                      contentType: "application/json",
                                      fileName: nil)
         
-        var multipartDatas: [MultipartData] = [textData]
+        var multipartDatas: [MultipartData] = [productData]
 
         multipartImages.forEach {
             let imageData = MultipartData(dispositionName: "images",
@@ -69,14 +69,14 @@ extension MultipartManager {
     }
     
     func convertToPatchProducct(_ product: RequestProduct) -> Data {
-        var dataElement: Data = Data()
+        var patchData: Data
         
         do {
-            dataElement = try JSONEncoder().encode(product)
+            patchData = try DataManager().encode(data: product)
         } catch {
-            print(error)
+            patchData = Data()
         }
         
-        return dataElement
+        return patchData
     }
 }

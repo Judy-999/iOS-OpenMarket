@@ -173,7 +173,7 @@ class ProductDetailCollectionViewController: UICollectionViewController {
     
     private func decodeResult(_ data: Data) {
         do {
-            self.detailProduct = try DataDecoder().decode(type: DetailProduct.self, data: data)
+            self.detailProduct = try DataManager().decode(type: DetailProduct.self, data: data)
             guard let detailProduct = detailProduct else {  return }
             self.detailProductItem = DetailProductItem(detailProduct: detailProduct)
             self.images = detailProduct.images.map { $0.url }

@@ -10,7 +10,7 @@ import XCTest
 @testable import OpenMarket
 
 class URLSessionManagerTests: XCTestCase {
-    let dataDecoder = DataDecoder()
+    let dataDecoder = DataManager()
     
     override func setUpWithError() throws {
         try super.setUpWithError()

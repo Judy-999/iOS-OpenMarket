@@ -128,7 +128,7 @@ final class MarketCollectionViewController: UICollectionViewController {
     
     private func decodeResult(_ data: Data) {
         do {
-            let page = try DataDecoder().decode(type: Page.self, data: data)
+            let page = try DataManager().decode(type: Page.self, data: data)
             
             self.items = page.pages.map {
                 Item(product: $0 )
