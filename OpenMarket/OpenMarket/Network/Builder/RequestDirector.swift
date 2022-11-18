@@ -37,7 +37,7 @@ struct RequestDirector {
             .setPath(URLPath.product.rawValue)
             .setBody(MultipartManager().makeBody(parameters: dataElement, boundary))
             .setHeaders(["Content-Type": "multipart/form-data; boundary=\(boundary)",
-                         "identifier": "\(VendorInfo.identifier)"])
+                         "identifier": VendorInfo.identifier])
             .buildRequest()
 
         return postRequest
@@ -46,7 +46,7 @@ struct RequestDirector {
     func createPatchRequest(productNumber: Int, dataElement: Data) -> MarketRequest? {    
         let patchRequest = builder.setMethod(.patch)
             .setPath(URLPath.product.rawValue + "/\(productNumber)")
-            .setHeaders(["identifier": "\(VendorInfo.identifier)",
+            .setHeaders(["identifier": VendorInfo.identifier,
                          "Content-Type": "application/json"])
             .setBody(dataElement)
             .buildRequest()
@@ -61,7 +61,7 @@ struct RequestDirector {
         let deleteURIRequest = builder.setMethod(.post)
             .setPath(URLPath.product.rawValue + "/\(productNumber)/archived")
             .setHeaders(["Content-Type": "application/json",
-                         "identifier": "\(VendorInfo.identifier)"])
+                         "identifier": VendorInfo.identifier])
             .setBody(postData)
             .buildRequest()
         
@@ -73,7 +73,7 @@ struct RequestDirector {
         
         let deleteRequest = builder.setMethod(.delete)
             .setPath(deleteKey)
-            .setHeaders(["identifier": "\(VendorInfo.identifier)"])
+            .setHeaders(["identifier": VendorInfo.identifier])
             .buildRequest()
         
         return deleteRequest
