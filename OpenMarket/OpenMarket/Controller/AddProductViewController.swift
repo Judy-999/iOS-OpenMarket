@@ -250,4 +250,12 @@ extension Data {
         }
         return ext
     }
+fileprivate enum MarketInfo {
+    static let addProductTitle = "상품등록"
+    static let editProductTitle = "상품수정"
+}
+
+fileprivate enum ProductImageInfo {
+    static let numberOfMax = 5
+    static let maximumCapacity = 300
 }

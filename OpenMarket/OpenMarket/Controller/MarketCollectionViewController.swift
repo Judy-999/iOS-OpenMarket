@@ -187,3 +187,8 @@ extension MarketCollectionViewController {
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
 }
+
+fileprivate enum ProductListType {
+    static let list = "LIST"
+    static let grid = "GRID"
+}
