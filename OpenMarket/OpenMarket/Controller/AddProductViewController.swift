@@ -233,23 +233,6 @@ extension AddProductViewController: UITextViewDelegate {
     }
 }
 
-//MARK: ImageDataType
-extension Data {
-    var fileExtension: String {
-        let array = [UInt8](self)
-        let ext: String
-        switch (array[0]) {
-        case 0xFF:
-            ext = "jpg"
-        case 0x89:
-            ext = "png"
-        case 0xd8:
-            ext = "jpeg"
-        default:
-            ext = "unknown"
-        }
-        return ext
-    }
 fileprivate enum MarketInfo {
     static let addProductTitle = "상품등록"
     static let editProductTitle = "상품수정"

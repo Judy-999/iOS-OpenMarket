@@ -15,7 +15,7 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.adjustsFontSizeToFitWidth = true
+//        label.adjustsFontSizeToFitWidth = true
         label.font = .boldSystemFont(ofSize: 20)
         return label
     }()
@@ -24,7 +24,7 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .body)
         label.textColor = .systemRed
-        label.adjustsFontSizeToFitWidth = true
+//        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 2
         return label
     }()
@@ -33,7 +33,7 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .body)
         label.textColor = .systemGray
-        label.adjustsFontSizeToFitWidth = true
+//        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -90,15 +90,7 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
             self.priceLabel.textColor = .systemGray
         } else {
             let price = item.price + " " + item.bargainPrice
-            let attributeString = NSMutableAttributedString(string: price)
-            
-            attributeString.addAttribute(.strikethroughStyle,
-                                         value: NSUnderlineStyle.single.rawValue,
-                                         range: NSMakeRange(0, item.price.count))
-            attributeString.addAttribute(.foregroundColor,
-                                         value: UIColor.systemGray,
-                                         range: NSMakeRange(item.price.count + 1, item.bargainPrice.count))
-            self.priceLabel.attributedText = attributeString
+            self.priceLabel.attributedText = price.addDiscountAttribute(with: item.price.count, item.bargainPrice.count)
         }
         
         if item.stock != "0" {

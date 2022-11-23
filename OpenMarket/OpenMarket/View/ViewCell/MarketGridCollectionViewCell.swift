@@ -54,15 +54,7 @@ final class MarketGridCollectionViewCell: UICollectionViewCell {
             self.priceLabel.textColor = .systemGray
         } else {
             let price = item.price + "\n" + item.bargainPrice
-            let attributeString = NSMutableAttributedString(string: price)
-            
-            attributeString.addAttribute(.strikethroughStyle,
-                                         value: NSUnderlineStyle.single.rawValue,
-                                         range: NSMakeRange(0, item.price.count))
-            attributeString.addAttribute(.foregroundColor,
-                                         value: UIColor.systemGray,
-                                         range: NSMakeRange(item.price.count + 1, item.bargainPrice.count))
-            self.priceLabel.attributedText = attributeString
+            self.priceLabel.attributedText = price.addDiscountAttribute(with: item.price.count, item.bargainPrice.count)
         }
         
         if item.stock != "0" {
