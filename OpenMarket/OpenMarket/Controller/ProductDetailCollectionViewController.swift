@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProductDetailCollectionViewController: UICollectionViewController {
+final class ProductDetailCollectionViewController: UICollectionViewController {
     // MARK: Inner types
     enum Section: Int ,Hashable {
         case image

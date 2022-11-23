@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddProductViewController: UIViewController {
+final class AddProductViewController: UIViewController {
     // MARK: Inner types
     private enum ViewMode {
         case add, edit

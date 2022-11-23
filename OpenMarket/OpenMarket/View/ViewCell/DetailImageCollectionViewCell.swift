@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailImageCollectionViewCell: UICollectionViewCell {
+final class DetailImageCollectionViewCell: UICollectionViewCell {
     let imageView: SessionImageView = {
         let image = SessionImageView()
         image.translatesAutoresizingMaskIntoConstraints = false

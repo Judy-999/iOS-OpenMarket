@@ -15,7 +15,6 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-//        label.adjustsFontSizeToFitWidth = true
         label.font = .boldSystemFont(ofSize: 20)
         return label
     }()
@@ -24,7 +23,6 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .body)
         label.textColor = .systemRed
-//        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 2
         return label
     }()
@@ -33,7 +31,6 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .body)
         label.textColor = .systemGray
-//        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -153,7 +150,7 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
     }
 }
 
-extension CALayer {
+fileprivate extension CALayer {
     fileprivate func addBottomBorder() {
         let border = CALayer()
         border.backgroundColor = UIColor.systemGray3.cgColor

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailInfoCollectionViewCell: UICollectionViewCell {
+final class DetailInfoCollectionViewCell: UICollectionViewCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 20)
