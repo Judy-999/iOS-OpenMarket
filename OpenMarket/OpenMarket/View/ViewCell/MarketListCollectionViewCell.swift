@@ -151,7 +151,7 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
 }
 
 fileprivate extension CALayer {
-    fileprivate func addBottomBorder() {
+    func addBottomBorder() {
         let border = CALayer()
         border.backgroundColor = UIColor.systemGray3.cgColor
         

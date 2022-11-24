@@ -130,9 +130,7 @@ final class MarketCollectionViewController: UICollectionViewController {
         do {
             let page = try DataManager().decode(type: Page.self, data: data)
             
-            self.items = page.pages.map {
-                Item(product: $0 )
-            }
+            self.items = page.pages.map { Item(product: $0 ) }
         } catch {
             DispatchQueue.main.async {
                 self.showAlert(title: "데이터 변환 실패", message: "가져온 데이터를 읽을 수 없습니다.")
