@@ -8,6 +8,7 @@
 import UIKit
 
 final class DetailImageCollectionViewCell: UICollectionViewCell {
+    // MARK: - Properties
     let imageView: SessionImageView = {
         let image = SessionImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -31,34 +32,36 @@ final class DetailImageCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-
+    // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
-        arrangeSubView()
+        setupView()
     }
     
-//    func configureCell(with item: DetailProduct) {
-//        if let cachedImage = ImageCacheManager.shared.object(forKey: NSString(string: )) {
-//            imageView.image = cachedImage
-//        } else {
-//            imageView.configureImage(url: item.productImage, cell, indexPath, collectionView)
-//        }
-//    }
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupView()
+    }
     
-    private func arrangeSubView() {
+    private func setupView() {
+        addSubView()
+        setupConstraints()
+    }
+    
+    private func addSubView() {
         entireStackView.addArrangedSubview(imageView)
         entireStackView.addArrangedSubview(imageNumberLabel)
         
         contentView.addSubview(entireStackView)
-        
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             entireStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
             entireStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             entireStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             entireStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
             imageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.9)
         ])
     }

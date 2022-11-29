@@ -8,6 +8,7 @@
 import UIKit
 
 final class MarketListCollectionViewCell: UICollectionViewCell {
+    // MARK: - Properties
     private let imageView: SessionImageView = {
         let imageView = SessionImageView()
         return imageView
@@ -79,6 +80,18 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
+    // MARK: - Initializer
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupView()
+    }
+    
+    // MARK: - Methods
     func configureCell(with item: Item, _ cell: UICollectionViewCell, _ indexPath: IndexPath, _ collectionView: UICollectionView) {
         self.nameLabel.text = item.productName
         
@@ -104,7 +117,13 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    private func arrangeSubView() {
+    private func setupView() {
+        addSubView()
+        setupConstraints()
+        self.contentView.layer.addBottomBorder()
+    }
+    
+    private func addSubView() {
         stockLabel.textAlignment = .right
         
         subHorizontalStackView.addArrangedSubview(stockLabel)
@@ -120,29 +139,27 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
         entireStackView.addArrangedSubview(verticalStackView)
         
         contentView.addSubview(entireStackView)
-        
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
-            entireStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-            entireStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
-            entireStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            entireStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
+            entireStackView.topAnchor
+                .constraint(equalTo: contentView.topAnchor, constant: 5),
+            entireStackView.bottomAnchor
+                .constraint(equalTo: contentView.bottomAnchor, constant: -5),
+            entireStackView.trailingAnchor
+                .constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            entireStackView.leadingAnchor
+                .constraint(equalTo: contentView.leadingAnchor, constant: 5),
             
-            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 1),
+            imageView.widthAnchor
+                .constraint(equalTo: imageView.heightAnchor, multiplier: 1),
             
-            accessaryImageView.widthAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.2)
+            accessaryImageView.widthAnchor
+                .constraint(equalTo: contentView.heightAnchor, multiplier: 0.2)
         ])
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        arrangeSubView()
-        self.contentView.layer.addBottomBorder()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
+        
     override func prepareForReuse(){
         super.prepareForReuse()
         stockLabel.textColor = .systemGray
@@ -153,8 +170,8 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
 fileprivate extension CALayer {
     func addBottomBorder() {
         let border = CALayer()
-        border.backgroundColor = UIColor.systemGray3.cgColor
         
+        border.backgroundColor = UIColor.systemGray3.cgColor
         border.frame = CGRect(x: 0, y: frame.height - 0.5, width: frame.width, height: 0.5)
         
         self.addSublayer(border)

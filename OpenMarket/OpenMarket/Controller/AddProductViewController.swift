@@ -34,7 +34,7 @@ final class AddProductViewController: UIViewController {
     }
     
     func changeToEditMode(data: DetailProduct, images: [String]) {
-        productView.configure(data: data)
+        productView.configure(with: data)
         productNumber = data.id
         images.forEach {
             guard let cachedImage = ImageCacheManager.shared.object(forKey: NSString(string: $0)) else { return }
@@ -49,11 +49,11 @@ final class AddProductViewController: UIViewController {
         let cancelBarButton = UIBarButtonItem(title: "Cancel",
                                               style: .plain,
                                               target: self,
-                                              action: #selector(cancelButtonDidTapped))
+                                              action: #selector(cancelButtonDidTap))
         let doneBarButton = UIBarButtonItem(title: "Done",
                                             style: .plain,
                                             target: self,
-                                            action: #selector(updateButtonDidTapped))
+                                            action: #selector(doneButtonTapped))
         
         switch viewMode {
         case .add:
@@ -87,11 +87,11 @@ final class AddProductViewController: UIViewController {
     }
     
     //MARK: buttonAction
-    @objc private func cancelButtonDidTapped() {
+    @objc private func cancelButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
     }
     
-    @objc private func updateButtonDidTapped() {
+    @objc private func doneButtonTapped() {
         let sessionManager = URLSessionManager(session: URLSession.shared)
         let multipartManager = MultipartManager()
         guard let requestProduct = productView.createRequestProduct() else { return }
@@ -160,7 +160,7 @@ extension AddProductViewController: UICollectionViewDataSource, UICollectionView
     
     func collectionView( _ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddProductCollectionViewCell.id, for: indexPath) as? AddProductCollectionViewCell ?? AddProductCollectionViewCell()
-        cell.configureCell(image: dataSource[indexPath.item])
+        cell.configure(with: dataSource[indexPath.item])
         return cell
     }
     

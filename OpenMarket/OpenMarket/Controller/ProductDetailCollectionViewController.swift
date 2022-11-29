@@ -41,14 +41,17 @@ final class ProductDetailCollectionViewController: UICollectionViewController {
         let editAction = UIAlertAction(title: "수정", style: .default) { _ in
             self.convertToEditView()
         }
-        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) {_ in 
+        
+        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
             self.deleteAfterCheckSecret()
         }
+        
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
         
         [editAction, deleteAction, cancelAction].forEach {
             editAlert.addAction($0)
         }
+        
         present(editAlert, animated: true)
     }
     
@@ -90,8 +93,16 @@ final class ProductDetailCollectionViewController: UICollectionViewController {
     
     
     private func configureUI() {
-        let editProductBarButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(editProductButtonDidTapped))
-        let backBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backBarButtonDidTapped))
+        let editProductBarButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
+                                                   style: .plain,
+                                                   target: self,
+                                                   action: #selector(editProductButtonDidTapped))
+        
+        let backBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(backBarButtonDidTapped))
+        
         navigationItem.rightBarButtonItem = editProductBarButton
         navigationItem.hidesBackButton = true
         navigationItem.leftBarButtonItem = backBarButton

@@ -8,6 +8,7 @@
 import UIKit
 
 final class DetailInfoCollectionViewCell: UICollectionViewCell {
+    // MARK: - Properties
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 20)
@@ -62,7 +63,38 @@ final class DetailInfoCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    private func arrangeSubView() {
+    // MARK: - Initializer
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupView()
+    }
+    
+    // MARK: - Methods
+    func configureCell(with item: DetailProductItem) {
+        nameLabel.text = item.productName
+        stockLabel.text = "남은수량 : \(item.stock)"
+        descriptionView.text = item.description
+        
+        if item.price == item.bargainPrice {
+            self.priceLabel.text = item.price
+            self.priceLabel.textColor = .systemGray
+        } else {
+            let price = item.price + "\n" + item.bargainPrice
+            self.priceLabel.attributedText = price.addDiscountAttribute(with: item.price.count, item.bargainPrice.count)
+        }
+    }
+    
+    private func setupView() {
+        addSubView()
+        setupConstraints()
+    }
+    
+    private func addSubView() {
         horizontalStackView.addArrangedSubview(nameLabel)
         horizontalStackView.addArrangedSubview(stockLabel)
         
@@ -71,42 +103,14 @@ final class DetailInfoCollectionViewCell: UICollectionViewCell {
         verticalStackView.addArrangedSubview(descriptionView)
         
         contentView.addSubview(verticalStackView)
-        
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             verticalStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
             verticalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             verticalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             verticalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)
         ])
-    }
-    
-    func configureCell(with item: DetailProductItem) {
-        nameLabel.text = item.productName
-        if item.price == item.bargainPrice {
-            self.priceLabel.text = item.price
-            self.priceLabel.textColor = .systemGray
-        } else {
-            let price = item.price + "\n" + item.bargainPrice
-            let attributeString = NSMutableAttributedString(string: price)
-            
-            attributeString.addAttribute(.strikethroughStyle,
-                                         value: NSUnderlineStyle.single.rawValue,
-                                         range: NSMakeRange(0, item.price.count))
-            attributeString.addAttribute(.foregroundColor,
-                                         value: UIColor.systemGray,
-                                         range: NSMakeRange(item.price.count + 1, item.bargainPrice.count))
-            self.priceLabel.attributedText = attributeString
-        }
-        stockLabel.text = "남은수량 : \(item.stock)"
-        descriptionView.text = item.description
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        arrangeSubView()
     }
 }

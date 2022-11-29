@@ -17,7 +17,19 @@ final class AddProductCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
 
-    private func arrangeSubView() {
+    // MARK: - Initializer
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupConstraints()
+    }
+    
+    // MARK: - Methods
+    private func setupConstraints() {
         self.contentView.addSubview(productImage)
 
         NSLayoutConstraint.activate([
@@ -28,16 +40,7 @@ final class AddProductCollectionViewCell: UICollectionViewCell {
         ])
     }
 
-    func configureCell(image: UIImage) {
+    func configure(with image: UIImage) {
         productImage.image = image
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        arrangeSubView()
     }
 }
