@@ -80,6 +80,8 @@ final class AddProductView: UIView {
         textView.font = .preferredFont(forTextStyle: .caption1)
         textView.adjustsFontForContentSizeCategory = true
         textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        textView.keyboardDismissMode = .onDrag
         return textView
     }()
     
@@ -159,6 +161,10 @@ final class AddProductView: UIView {
         }
     }
     
+    func adjustContentInset(height: CGFloat) {
+        self.descriptionTextView.contentInset.bottom = height
+    }
+    
     private func setupView() {
         addSubView()
         setupConstraints()
@@ -190,6 +196,8 @@ final class AddProductView: UIView {
                 .constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             entireStackView.topAnchor
                 .constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 8),
+            entireStackView.bottomAnchor
+                .constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             
             collectionView.heightAnchor
                 .constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, multiplier: 0.2),
@@ -198,12 +206,6 @@ final class AddProductView: UIView {
             infoStackView.heightAnchor
                 .constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, multiplier: 0.2)
         ])
-        
-        let stackBottomConstraint = entireStackView.bottomAnchor
-            .constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -8)
-        
-        stackBottomConstraint.priority = .defaultHigh
-        stackBottomConstraint.isActive = true
     }
 }
 

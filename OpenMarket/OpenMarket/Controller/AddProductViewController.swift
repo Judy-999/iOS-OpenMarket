@@ -18,7 +18,6 @@ final class AddProductViewController: UIViewController {
     private var dataSource: [UIImage] = []
     private var imagePicker: UIImagePickerController?
     private var multipartImages: [MutipartImage] = []
-    private lazy var viewConstraint = productView.entireStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -260)
     private var viewMode: ViewMode = .add
     private var productNumber: Int?
     
@@ -31,6 +30,7 @@ final class AddProductViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureDelegate()
+        configureNotificationCenter()
     }
     
     func changeToEditMode(data: DetailProduct, images: [String]) {
@@ -76,7 +76,6 @@ final class AddProductViewController: UIViewController {
     private func configureDelegate() {
         productView.collectionView.dataSource = self
         productView.collectionView.delegate = self
-        productView.descriptionTextView.delegate = self
     }
     
     private func configureImagePicker() {
@@ -84,6 +83,29 @@ final class AddProductViewController: UIViewController {
         imagePicker?.sourceType = .photoLibrary
         imagePicker?.allowsEditing = true
         imagePicker?.delegate = self
+    }
+    
+    private func configureNotificationCenter() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        
+        productView.adjustContentInset(height: keyboardFrame.size.height)
+    }
+    
+    @objc private func keyboardWillHide() {
+        productView.adjustContentInset(height: 0)
     }
     
     //MARK: buttonAction
@@ -222,17 +244,7 @@ extension AddProductViewController: UIImagePickerControllerDelegate, UINavigatio
     }
 }
 
-//MARK: UITextView
-extension AddProductViewController: UITextViewDelegate {
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        viewConstraint.isActive = true
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        viewConstraint.isActive = false
-    }
-}
-
+//MARK: Namespace
 fileprivate enum MarketInfo {
     static let addProductTitle = "상품등록"
     static let editProductTitle = "상품수정"
