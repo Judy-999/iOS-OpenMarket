@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ProductDetailCollectionViewController: UICollectionViewController {
+final class ProductInfoViewController: UIViewController {
     // MARK: Inner types
     enum Section: Int ,Hashable {
         case image
@@ -20,6 +20,7 @@ final class ProductDetailCollectionViewController: UICollectionViewController {
     
     // MARK: Properties
     private lazy var dataSource = makeDataSource()
+    private var collectionView: UICollectionView!
     private var detailProduct: ProductInfo?
     private var detailProductItem: ProductInfoItem?
     private var images: [String] = []
@@ -27,9 +28,31 @@ final class ProductDetailCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.collectionViewLayout = createLayout()
-        receiveDetailData()
         configureUI()
+        receiveDetailData()
+    }
+    
+    private func configureCollectionView() {
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+        view.addSubview(collectionView)
+    }
+    
+    private func configureUI() {
+        configureCollectionView()
+        
+        let editProductBarButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
+                                                   style: .plain,
+                                                   target: self,
+                                                   action: #selector(editProductButtonDidTapped))
+        
+        let backBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(backBarButtonDidTapped))
+        
+        navigationItem.rightBarButtonItem = editProductBarButton
+        navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = backBarButton
     }
     
     @objc private func backBarButtonDidTapped() {
@@ -91,28 +114,11 @@ final class ProductDetailCollectionViewController: UICollectionViewController {
         present(checkAlert, animated: true)
     }
     
-    
-    private func configureUI() {
-        let editProductBarButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
-                                                   style: .plain,
-                                                   target: self,
-                                                   action: #selector(editProductButtonDidTapped))
-        
-        let backBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(backBarButtonDidTapped))
-        
-        navigationItem.rightBarButtonItem = editProductBarButton
-        navigationItem.hidesBackButton = true
-        navigationItem.leftBarButtonItem = backBarButton
-    }
-    
     private func convertToEditView() {
-        guard let productVC = storyboard?.instantiateViewController(withIdentifier: "ProductViewController") as? AddProductViewController else { return }
+        let editProductViewController = EditProductViewController()
         guard let detailProduct = detailProduct else { return }
-        productVC.changeToEditMode(data: detailProduct, images: images)
-        navigationController?.pushViewController(productVC, animated: true)
+        editProductViewController.changeToEditMode(data: detailProduct, images: images)
+        navigationController?.pushViewController(editProductViewController, animated: true)
     }
     
     func receiveProductInfo(number: Int, name: String) {

@@ -12,7 +12,7 @@
 		204E5D58289288F800FEB07D /* RequestProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E5D57289288F800FEB07D /* RequestProduct.swift */; };
 		205D32CB287D6491004CF76F /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 205D32CA287D6491004CF76F /* DataManager.swift */; };
 		2072734F2899067C001AC4DA /* DetailImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2072734E2899067C001AC4DA /* DetailImageCollectionViewCell.swift */; };
-		20727351289911A6001AC4DA /* ProductDetailCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20727350289911A6001AC4DA /* ProductDetailCollectionViewController.swift */; };
+		20727351289911A6001AC4DA /* ProductInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20727350289911A6001AC4DA /* ProductInfoViewController.swift */; };
 		2072735328996E8E001AC4DA /* ProductInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2072735228996E8E001AC4DA /* ProductInfo.swift */; };
 		2087C900292DF1A50075C428 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2087C8FF292DF1A50075C428 /* String+Extension.swift */; };
 		2087C902292DF53A0075C428 /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2087C901292DF53A0075C428 /* Data+Extension.swift */; };
@@ -22,7 +22,7 @@
 		20B4AB9E290F978500BF6C7A /* MarketRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B4AB9D290F978500BF6C7A /* MarketRequest.swift */; };
 		20B4ABA0290FA10400BF6C7A /* Namespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B4AB9F290FA10400BF6C7A /* Namespace.swift */; };
 		20B4ABA2290FA1A200BF6C7A /* MultipartManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B4ABA1290FA1A200BF6C7A /* MultipartManager.swift */; };
-		20B8CD3B289144E000D4424D /* AddProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B8CD3A289144E000D4424D /* AddProductViewController.swift */; };
+		20B8CD3B289144E000D4424D /* EditProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20B8CD3A289144E000D4424D /* EditProductViewController.swift */; };
 		20BD32E828859A5000746181 /* MarketListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BD32E728859A5000746181 /* MarketListCollectionViewCell.swift */; };
 		20CC8D8028FE990F00CD1613 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CC8D7F28FE990F00CD1613 /* APIRequest.swift */; };
 		20CC8D8228FF967400CD1613 /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CC8D8128FF967400CD1613 /* RequestBuilder.swift */; };
@@ -62,7 +62,7 @@
 		204E5D57289288F800FEB07D /* RequestProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestProduct.swift; sourceTree = "<group>"; };
 		205D32CA287D6491004CF76F /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		2072734E2899067C001AC4DA /* DetailImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailImageCollectionViewCell.swift; sourceTree = "<group>"; };
-		20727350289911A6001AC4DA /* ProductDetailCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailCollectionViewController.swift; sourceTree = "<group>"; };
+		20727350289911A6001AC4DA /* ProductInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfoViewController.swift; sourceTree = "<group>"; };
 		2072735228996E8E001AC4DA /* ProductInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfo.swift; sourceTree = "<group>"; };
 		2087C8FF292DF1A50075C428 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		2087C901292DF53A0075C428 /* Data+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extension.swift"; sourceTree = "<group>"; };
@@ -72,7 +72,7 @@
 		20B4AB9D290F978500BF6C7A /* MarketRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketRequest.swift; sourceTree = "<group>"; };
 		20B4AB9F290FA10400BF6C7A /* Namespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Namespace.swift; sourceTree = "<group>"; };
 		20B4ABA1290FA1A200BF6C7A /* MultipartManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartManager.swift; sourceTree = "<group>"; };
-		20B8CD3A289144E000D4424D /* AddProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewController.swift; sourceTree = "<group>"; };
+		20B8CD3A289144E000D4424D /* EditProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProductViewController.swift; sourceTree = "<group>"; };
 		20BD32E728859A5000746181 /* MarketListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketListCollectionViewCell.swift; sourceTree = "<group>"; };
 		20CC8D7F28FE990F00CD1613 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		20CC8D8128FF967400CD1613 /* RequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
@@ -203,8 +203,8 @@
 			isa = PBXGroup;
 			children = (
 				20ABC74E2881498600E43871 /* MainViewController.swift */,
-				20B8CD3A289144E000D4424D /* AddProductViewController.swift */,
-				20727350289911A6001AC4DA /* ProductDetailCollectionViewController.swift */,
+				20B8CD3A289144E000D4424D /* EditProductViewController.swift */,
+				20727350289911A6001AC4DA /* ProductInfoViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -393,10 +393,10 @@
 				20BD32E828859A5000746181 /* MarketListCollectionViewCell.swift in Sources */,
 				2087C902292DF53A0075C428 /* Data+Extension.swift in Sources */,
 				2087C900292DF1A50075C428 /* String+Extension.swift in Sources */,
-				20B8CD3B289144E000D4424D /* AddProductViewController.swift in Sources */,
+				20B8CD3B289144E000D4424D /* EditProductViewController.swift in Sources */,
 				7E52D337289142FB00388E37 /* AddProductCollectionViewCell.swift in Sources */,
 				2072734F2899067C001AC4DA /* DetailImageCollectionViewCell.swift in Sources */,
-				20727351289911A6001AC4DA /* ProductDetailCollectionViewController.swift in Sources */,
+				20727351289911A6001AC4DA /* ProductInfoViewController.swift in Sources */,
 				20AAF95D287C0D2600E48A96 /* Currency.swift in Sources */,
 				20CC8D8228FF967400CD1613 /* RequestBuilder.swift in Sources */,
 				2072735328996E8E001AC4DA /* ProductInfo.swift in Sources */,

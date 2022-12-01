@@ -18,7 +18,7 @@ final class MainViewController: UIViewController {
     typealias SnapShot = NSDiffableDataSourceSnapshot<Section, ProductItem>
     
     // MARK: Properties
-    private var dataSource: DataSource! //= makeListDataSource()
+    private lazy var dataSource = makeListDataSource()
     private var collectionView: UICollectionView!
     private var products: [ProductItem] = []
     
@@ -45,13 +45,16 @@ final class MainViewController: UIViewController {
         configureUI()
         receivePageData()
         addAction()
-        dataSource = makeListDataSource()
+    }
+    
+    private func configureCollectionView() {
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createListLayout())
         collectionView.delegate = self
+        view.addSubview(collectionView)
     }
     
     private func configureUI() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createListLayout())
-        view.addSubview(collectionView)
+        configureCollectionView()
         
         let addProductBarButton = UIBarButtonItem(image: UIImage(systemName: "plus"),
                                                   style: .plain,
@@ -79,8 +82,8 @@ final class MainViewController: UIViewController {
     }
     
     @objc private func addProductButtonTapped() {
-        guard let productVC = storyboard?.instantiateViewController(withIdentifier: "ProductViewController") else { return }
-        self.navigationController?.pushViewController(productVC, animated: true)
+        let editViewController = EditProductViewController()
+        self.navigationController?.pushViewController(editViewController, animated: true)
     }
     
     // MARK: DataSource
@@ -187,9 +190,10 @@ final class MainViewController: UIViewController {
 
 extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let detailVC = storyboard?.instantiateViewController(withIdentifier: "ProductDetailCollectionViewController") as? ProductDetailCollectionViewController else { return }
-        detailVC.receiveProductInfo(number: products[indexPath.row].productID, name: products[indexPath.row].productName)
-        self.navigationController?.pushViewController(detailVC, animated: true)
+        let productInfoViewController = ProductInfoViewController()
+        productInfoViewController.receiveProductInfo(number: products[indexPath.row].productID,
+                                                     name: products[indexPath.row].productName)
+        self.navigationController?.pushViewController(productInfoViewController, animated: true)
     }
 }
 

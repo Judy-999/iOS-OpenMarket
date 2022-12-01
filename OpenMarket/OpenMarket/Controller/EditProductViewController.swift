@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AddProductViewController: UIViewController {
+final class EditProductViewController: UIViewController {
     // MARK: Inner types
     private enum ViewMode {
         case add, edit
@@ -175,7 +175,7 @@ final class AddProductViewController: UIViewController {
 }
 
 //MARK: CollectionView's DataSource & Delegate
-extension AddProductViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension EditProductViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView( _ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         self.dataSource.count
     }
@@ -203,7 +203,7 @@ extension AddProductViewController: UICollectionViewDataSource, UICollectionView
 }
 
 //MARK: imagePickerController
-extension AddProductViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension EditProductViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         var selectedImage = UIImage()
         
