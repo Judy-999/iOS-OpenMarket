@@ -114,7 +114,7 @@ final class AddProductViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
-        let sessionManager = URLSessionManager(session: URLSession.shared)
+        let sessionManager = URLSessionManager()
         let multipartManager = MultipartManager()
         guard let requestProduct = productView.createRequestProduct() else { return }
         

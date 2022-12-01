@@ -16,7 +16,7 @@ enum DataTaskError: Error {
 final class URLSessionManager {
     private let session: URLSessionProtocol
     
-    init(session: URLSessionProtocol) {
+    init(session: URLSessionProtocol = URLSession.shared) {
         self.session = session
     }
 

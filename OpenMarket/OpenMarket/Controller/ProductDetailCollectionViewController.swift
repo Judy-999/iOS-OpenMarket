@@ -60,7 +60,7 @@ final class ProductDetailCollectionViewController: UICollectionViewController {
         checkAlert.addTextField()
         
         let confirmAction = UIAlertAction(title: "확인", style: .default) { [self] _ in
-            let sessionManager = URLSessionManager(session: URLSession.shared)
+            let sessionManager = URLSessionManager()
             guard let inputSecret = checkAlert.textFields?.first?.text else { return }
             guard let productNumber = productNumber else { return }
             
@@ -144,7 +144,7 @@ final class ProductDetailCollectionViewController: UICollectionViewController {
     
     // MARK: Data & Snapshot
     private func receiveDetailData() {
-        let sessionManager = URLSessionManager(session: URLSession.shared)
+        let sessionManager = URLSessionManager()
         
         guard let productNumber = productNumber else { return }
         guard let productDetailRequest = RequestDirector().createGetDetailRequest(productNumber) else { return }

@@ -9,7 +9,6 @@ import UIKit
 
 class SessionImageView: UIImageView {
     func configureImage(url: String, _ cell: UICollectionViewCell, _ indexPath: IndexPath, _ collectionView: UICollectionView) {
-        let sessionManager = URLSessionManager(session: URLSession.shared)
         let cachedKey = NSString(string: url)
         
         guard let imageRequest = RequestBuilder().setMethod(.get)
@@ -17,7 +16,7 @@ class SessionImageView: UIImageView {
             .setPath("")
             .buildRequest() else { return }
                 
-        sessionManager.dataTask(request: imageRequest) { result in
+        URLSessionManager().dataTask(request: imageRequest) { result in
             switch result {
             case .success(let data):
                 guard let imageData = UIImage(data: data) else { return }
