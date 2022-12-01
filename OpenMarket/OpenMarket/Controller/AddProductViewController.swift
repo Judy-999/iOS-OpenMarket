@@ -33,7 +33,7 @@ final class AddProductViewController: UIViewController {
         configureNotificationCenter()
     }
     
-    func changeToEditMode(data: DetailProduct, images: [String]) {
+    func changeToEditMode(data: ProductInfo, images: [String]) {
         productView.configure(with: data)
         productNumber = data.id
         images.forEach {

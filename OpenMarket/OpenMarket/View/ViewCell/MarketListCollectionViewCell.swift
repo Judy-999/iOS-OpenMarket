@@ -92,7 +92,7 @@ final class MarketListCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Methods
-    func configureCell(with item: Item, _ cell: UICollectionViewCell, _ indexPath: IndexPath, _ collectionView: UICollectionView) {
+    func configureCell(with item: ProductItem, _ cell: UICollectionViewCell, _ indexPath: IndexPath, _ collectionView: UICollectionView) {
         self.nameLabel.text = item.productName
         
         if item.price == item.bargainPrice {

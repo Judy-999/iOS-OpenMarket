@@ -15,13 +15,13 @@ final class ProductDetailCollectionViewController: UICollectionViewController {
     }
     
     // MARK: Typealias
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, DetailProductItem>
-    typealias SnapShot = NSDiffableDataSourceSnapshot<Section, DetailProductItem>
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, ProductInfoItem>
+    typealias SnapShot = NSDiffableDataSourceSnapshot<Section, ProductInfoItem>
     
     // MARK: Properties
     private lazy var dataSource = makeDataSource()
-    private var detailProduct: DetailProduct?
-    private var detailProductItem: DetailProductItem?
+    private var detailProduct: ProductInfo?
+    private var detailProductItem: ProductInfoItem?
     private var images: [String] = []
     private var productNumber: Int?
     
@@ -122,11 +122,11 @@ final class ProductDetailCollectionViewController: UICollectionViewController {
     
     // MARK: DataSource
     private func makeDataSource() -> DataSource {
-        let infoRegistration = UICollectionView.CellRegistration<DetailInfoCollectionViewCell, DetailProductItem>.init { cell, indexPath, item in
+        let infoRegistration = UICollectionView.CellRegistration<DetailInfoCollectionViewCell, ProductInfoItem>.init { cell, indexPath, item in
             cell.configureCell(with: item)
         }
         
-        let imageRegistration = UICollectionView.CellRegistration<DetailImageCollectionViewCell, DetailProductItem>.init { cell, indexPath, item in
+        let imageRegistration = UICollectionView.CellRegistration<DetailImageCollectionViewCell, ProductInfoItem>.init { cell, indexPath, item in
             cell.imageView.configureImage(url: item.thumbnailURL, cell, indexPath, self.collectionView)
             cell.imageNumberLabel.text = "\(indexPath.row+1)/\(self.images.count)"
         }
@@ -170,10 +170,10 @@ final class ProductDetailCollectionViewController: UICollectionViewController {
     private func applySnapshots() {
         var itemSnapshot = SnapShot()
         guard let detailProduct = detailProductItem else { return }
-        var detailImages: [DetailProductItem] = []
+        var detailImages: [ProductInfoItem] = []
         
         images.forEach {
-            detailImages.append(DetailProductItem(detailItem: detailProduct, image: $0))
+            detailImages.append(ProductInfoItem(detailItem: detailProduct, imageURL: $0))
         }
         itemSnapshot.appendSections([.image, .info])
         itemSnapshot.appendItems(detailImages , toSection: .image)
@@ -184,9 +184,9 @@ final class ProductDetailCollectionViewController: UICollectionViewController {
     
     private func decodeResult(_ data: Data) {
         do {
-            self.detailProduct = try DataManager().decode(type: DetailProduct.self, data: data)
+            self.detailProduct = try DataManager().decode(type: ProductInfo.self, data: data)
             guard let detailProduct = detailProduct else {  return }
-            self.detailProductItem = DetailProductItem(detailProduct: detailProduct)
+            self.detailProductItem = ProductInfoItem(product: detailProduct)
             self.images = detailProduct.images.map { $0.url }
         } catch {
             DispatchQueue.main.async {

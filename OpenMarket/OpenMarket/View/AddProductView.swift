@@ -147,7 +147,7 @@ final class AddProductView: UIView {
         return requestProuct
     }
     
-    func configure(with data: DetailProduct) {
+    func configure(with data: ProductInfo) {
         productNameTextfield.text = data.name
         priceTextfield.text = String(data.price)
         discountedPriceTextfield.text = String(data.discountedPrice)

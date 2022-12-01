@@ -75,7 +75,7 @@ final class DetailInfoCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Methods
-    func configureCell(with item: DetailProductItem) {
+    func configureCell(with item: ProductInfoItem) {
         nameLabel.text = item.productName
         stockLabel.text = "남은수량 : \(item.stock)"
         descriptionView.text = item.description
