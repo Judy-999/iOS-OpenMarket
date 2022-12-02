@@ -8,25 +8,25 @@
 import UIKit
 
 struct ProductItem: Hashable {
-    let productID: Int
-    let productImage: String
-    let productName: String
+    let id: Int
+    let thumbnailURL: String
+    let name: String
     let price: String
     let bargainPrice: String
     let stock: String
     
     init(product: Product) {
-        self.productID = product.id
-        self.productName = product.name
+        self.id = product.id
+        self.name = product.name
         self.price = product.currency.rawValue + " " + product.price.devidePrice
         self.bargainPrice = product.currency.rawValue + " " + product.bargainPrice.devidePrice
         self.stock = String(product.stock)
-        self.productImage = product.thumbnail
+        self.thumbnailURL = product.thumbnail
     }
 }
 
 struct ProductInfoItem: Hashable {
-    let productName: String
+    let name: String
     let price: String
     let bargainPrice: String
     let stock: String
@@ -34,7 +34,7 @@ struct ProductInfoItem: Hashable {
     let thumbnailURL: String
     
     init(product: ProductInfo) {
-        self.productName = product.name
+        self.name = product.name
         self.price = product.currency.rawValue + " " + product.price.devidePrice
         self.bargainPrice = product.currency.rawValue + " " + product.bargainPrice.devidePrice
         self.stock = String(product.stock)
@@ -43,7 +43,7 @@ struct ProductInfoItem: Hashable {
     }
 
     init(detailItem: ProductInfoItem, imageURL: String) {
-        self.productName = detailItem.productName
+        self.name = detailItem.name
         self.price = detailItem.price
         self.bargainPrice = detailItem.bargainPrice
         self.stock = detailItem.stock

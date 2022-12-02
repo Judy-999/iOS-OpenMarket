@@ -191,8 +191,8 @@ final class MainViewController: UIViewController {
 extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let productInfoViewController = ProductInfoViewController()
-        productInfoViewController.receiveProductInfo(number: products[indexPath.row].productID,
-                                                     name: products[indexPath.row].productName)
+        productInfoViewController.receiveProductInfo(number: products[indexPath.row].id,
+                                                     name: products[indexPath.row].name)
         self.navigationController?.pushViewController(productInfoViewController, animated: true)
     }
 }

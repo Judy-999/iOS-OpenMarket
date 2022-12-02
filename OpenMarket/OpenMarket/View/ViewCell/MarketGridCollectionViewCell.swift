@@ -59,7 +59,7 @@ final class MarketGridCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Methods
     func configureCell(with item: ProductItem, _ cell: UICollectionViewCell, _ indexPath: IndexPath, _ collectionView: UICollectionView) {
-        self.nameLabel.text = item.productName
+        self.nameLabel.text = item.name
         
         if item.price == item.bargainPrice {
             self.priceLabel.text = item.price
@@ -76,10 +76,10 @@ final class MarketGridCollectionViewCell: UICollectionViewCell {
             self.stockLabel.textColor = .systemOrange
         }
         
-        if let cachedImage = ImageCacheManager.shared.object(forKey: NSString(string: item.productImage)) {
+        if let cachedImage = ImageCacheManager.shared.object(forKey: NSString(string: item.thumbnailURL)) {
             imageView.image = cachedImage
         } else {
-            imageView.configureImage(url: item.productImage, cell, indexPath, collectionView)
+            imageView.configureImage(url: item.thumbnailURL, cell, indexPath, collectionView)
         }
     }
     
