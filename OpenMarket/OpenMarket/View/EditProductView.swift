@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AddProductView: UIView {
+final class EditProductView: UIView {
     // MARK: - Properties
     private let flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
@@ -19,7 +19,7 @@ final class AddProductView: UIView {
     
     lazy var collectionView: UICollectionView = {
         let view = UICollectionView(frame: .zero, collectionViewLayout: self.flowLayout)
-        view.register(AddProductCollectionViewCell.self, forCellWithReuseIdentifier: AddProductCollectionViewCell.id)
+        view.register(cellWithClass: AddImageCollectionViewCell.self)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -69,7 +69,8 @@ final class AddProductView: UIView {
     }()
 
     let segmentedControl: UISegmentedControl = {
-        let segmentedControl = UIKit.UISegmentedControl(items: [Currency.krw.rawValue, Currency.usd.rawValue])
+        let segmentedControl = UIKit.UISegmentedControl(items: [Currency.krw.rawValue,
+                                                                Currency.usd.rawValue])
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.selectedSegmentIndex = 0
         return segmentedControl
@@ -129,20 +130,18 @@ final class AddProductView: UIView {
               let priceText = priceTextfield.text,
               let discountedPriceText = discountedPriceTextfield.text,
               let stockText = stockTextfield.text,
+              let currency = Currency.indexToCurreny(segmentedControl.selectedSegmentIndex),
               let descriptionText = descriptionTextView.text else { return nil }
 
         let price = Double(priceText) ?? 0
         let discountedPrice = Double(discountedPriceText) ?? 0
         let stock = Int(stockText) ?? 0
-        var currency = ""
-    
-        if segmentedControl.selectedSegmentIndex == 0 {
-            currency = Currency.krw.rawValue
-        } else {
-            currency = Currency.usd.rawValue
-        }
-        
-        let requestProuct = RequestProduct(productName: name, price: price, discountedPrice: discountedPrice, currency: currency, stock: stock, description: descriptionText)
+        let requestProuct = RequestProduct(productName: name,
+                                           price: price,
+                                           discountedPrice: discountedPrice,
+                                           currency: currency,
+                                           stock: stock,
+                                           description: descriptionText)
         
         return requestProuct
     }
@@ -153,12 +152,7 @@ final class AddProductView: UIView {
         discountedPriceTextfield.text = String(data.discountedPrice)
         stockTextfield.text = String(data.stock)
         descriptionTextView.text = data.description
-        
-        if data.currency.rawValue == Currency.krw.rawValue {
-            segmentedControl.selectedSegmentIndex = 0
-        } else {
-            segmentedControl.selectedSegmentIndex = 1
-        }
+        segmentedControl.selectedSegmentIndex = data.currency.index
     }
     
     func adjustContentInset(height: CGFloat) {
