@@ -9,13 +9,13 @@ import UIKit
 
 final class MainViewController: UIViewController {
     // MARK: Inner types
-    enum Section: Hashable {
+    private enum Section: Hashable {
         case main
     }
     
     // MARK: Typealias
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, ProductItem>
-    typealias SnapShot = NSDiffableDataSourceSnapshot<Section, ProductItem>
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, ProductItem>
+    private typealias SnapShot = NSDiffableDataSourceSnapshot<Section, ProductItem>
     
     // MARK: Properties
     private lazy var dataSource = makeListDataSource()
@@ -24,7 +24,8 @@ final class MainViewController: UIViewController {
     
     // MARK: UI
     private let segmentedControl: UISegmentedControl = {
-        let segmentedControl = UIKit.UISegmentedControl(items: [ProductListType.list, ProductListType.grid])
+        let segmentedControl = UIKit.UISegmentedControl(items: [LayoutType.list.name,
+                                                                LayoutType.grid.name])
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.selectedSegmentTintColor = .systemBlue
         segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
@@ -200,4 +201,5 @@ extension MainViewController: UICollectionViewDelegate {
 fileprivate enum ProductListType {
     static let list = "LIST"
     static let grid = "GRID"
+    private enum LayoutType: Int {
 }

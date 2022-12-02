@@ -9,14 +9,13 @@ import UIKit
 
 final class ProductInfoViewController: UIViewController {
     // MARK: Inner types
-    enum Section: Int ,Hashable {
-        case image
-        case info
+    private enum Section: Int ,Hashable {
+        case image, info
     }
     
     // MARK: Typealias
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, ProductInfoItem>
-    typealias SnapShot = NSDiffableDataSourceSnapshot<Section, ProductInfoItem>
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, ProductInfoItem>
+    private typealias SnapShot = NSDiffableDataSourceSnapshot<Section, ProductInfoItem>
     
     // MARK: Properties
     private lazy var dataSource = makeDataSource()

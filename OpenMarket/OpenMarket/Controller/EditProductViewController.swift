@@ -245,12 +245,14 @@ extension EditProductViewController: UIImagePickerControllerDelegate, UINavigati
 }
 
 //MARK: Namespace
-fileprivate enum MarketInfo {
-    static let addProductTitle = "상품등록"
-    static let editProductTitle = "상품수정"
-}
-
-fileprivate enum ProductImageInfo {
-    static let numberOfMax = 5
-    static let maximumCapacity = 300
+extension EditProductViewController {
+    private enum MarketInfo {
+        static let addProductTitle = "상품등록"
+        static let editProductTitle = "상품수정"
+    }
+    
+    private enum ProductImageInfo {
+        static let numberOfMax = 5
+        static let maximumCapacity = 300
+    }
 }
