@@ -34,7 +34,7 @@
 		7E516C9F287F1A920010E67F /* URLSessionManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E516C9E287F1A920010E67F /* URLSessionManagerTest.swift */; };
 		7E516CF1288146A40010E67F /* ProductItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E516CF0288146A40010E67F /* ProductItem.swift */; };
 		7E52D3352891427800388E37 /* AddProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52D3342891427800388E37 /* AddProductView.swift */; };
-		7E52D337289142FB00388E37 /* AddProductCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52D336289142FB00388E37 /* AddProductCollectionViewCell.swift */; };
+		7E52D337289142FB00388E37 /* AddImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52D336289142FB00388E37 /* AddImageCollectionViewCell.swift */; };
 		7E52E1AE2887A4070094429B /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52E1AD2887A4070094429B /* LoadingIndicator.swift */; };
 		7E8CE2D22886DC95009F6C5E /* MarketGridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8CE2D12886DC95009F6C5E /* MarketGridCollectionViewCell.swift */; };
 		7EA083A4287C049D00BB1740 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA083A3287C049D00BB1740 /* Product.swift */; };
@@ -87,7 +87,7 @@
 		7E516C9E287F1A920010E67F /* URLSessionManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionManagerTest.swift; sourceTree = "<group>"; };
 		7E516CF0288146A40010E67F /* ProductItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductItem.swift; sourceTree = "<group>"; };
 		7E52D3342891427800388E37 /* AddProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductView.swift; sourceTree = "<group>"; };
-		7E52D336289142FB00388E37 /* AddProductCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductCollectionViewCell.swift; sourceTree = "<group>"; };
+		7E52D336289142FB00388E37 /* AddImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		7E52E1AD2887A4070094429B /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		7E8CE2D12886DC95009F6C5E /* MarketGridCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketGridCollectionViewCell.swift; sourceTree = "<group>"; };
 		7EA083A3287C049D00BB1740 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
@@ -137,7 +137,7 @@
 				20F2385A2939C4F50086180F /* MarketCollectionCell.swift */,
 				20BD32E728859A5000746181 /* MarketListCollectionViewCell.swift */,
 				7E8CE2D12886DC95009F6C5E /* MarketGridCollectionViewCell.swift */,
-				7E52D336289142FB00388E37 /* AddProductCollectionViewCell.swift */,
+				7E52D336289142FB00388E37 /* AddImageCollectionViewCell.swift */,
 				2072734E2899067C001AC4DA /* DetailImageCollectionViewCell.swift */,
 				7EA85D3C28990BAD009F0F20 /* DetailInfoCollectionViewCell.swift */,
 			);
@@ -401,7 +401,7 @@
 				2087C902292DF53A0075C428 /* Data+Extension.swift in Sources */,
 				2087C900292DF1A50075C428 /* String+Extension.swift in Sources */,
 				20B8CD3B289144E000D4424D /* EditProductViewController.swift in Sources */,
-				7E52D337289142FB00388E37 /* AddProductCollectionViewCell.swift in Sources */,
+				7E52D337289142FB00388E37 /* AddImageCollectionViewCell.swift in Sources */,
 				2072734F2899067C001AC4DA /* DetailImageCollectionViewCell.swift in Sources */,
 				20727351289911A6001AC4DA /* ProductInfoViewController.swift in Sources */,
 				20AAF95D287C0D2600E48A96 /* Currency.swift in Sources */,

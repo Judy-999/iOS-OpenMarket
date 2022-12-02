@@ -7,9 +7,7 @@
 
 import UIKit
 
-final class AddProductCollectionViewCell: UICollectionViewCell {
-    static let id = "ProductCell"
-
+final class AddImageCollectionViewCell: UICollectionViewCell {
     private let productImage: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .systemGray5
