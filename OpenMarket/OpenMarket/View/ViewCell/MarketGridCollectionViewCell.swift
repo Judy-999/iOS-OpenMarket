@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MarketGridCollectionViewCell: UICollectionViewCell {
+final class MarketGridCollectionViewCell: UICollectionViewCell, MarketCollectionCell {
     // MARK: - Properties
     private let imageView: SessionImageView = {
         let imageView = SessionImageView()
