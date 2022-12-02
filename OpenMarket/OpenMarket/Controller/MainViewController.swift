@@ -18,7 +18,7 @@ final class MainViewController: UIViewController {
     private typealias SnapShot = NSDiffableDataSourceSnapshot<Section, ProductItem>
     
     // MARK: Properties
-    private lazy var dataSource = makeListDataSource()
+    private lazy var dataSource = makeDataSource(for: .list)
     private var collectionView: UICollectionView!
     private var products: [ProductItem] = []
     
@@ -38,7 +38,6 @@ final class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         receivePageData()
-        collectionView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -52,6 +51,8 @@ final class MainViewController: UIViewController {
         collectionView = UICollectionView(frame: view.bounds,
                                           collectionViewLayout: createLayout(for: .list))
         collectionView.delegate = self
+        collectionView.register(cellWithClass: MarketListCollectionViewCell.self)
+        collectionView.register(cellWithClass: MarketGridCollectionViewCell.self)
         view.addSubview(collectionView)
     }
     
@@ -68,22 +69,17 @@ final class MainViewController: UIViewController {
     }
     
     private func addAction() {
-        segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
+        segmentedControl.addTarget(self,
+                                   action: #selector(indexChanged),
+                                   for: .valueChanged)
     }
     
     @objc private func indexChanged(segmentedControl: UISegmentedControl) {
-        if segmentedControl.selectedSegmentIndex == 0 {
-            collectionView.collectionViewLayout = createListLayout()
-            dataSource = makeListDataSource()
-            receivePageData()
-        } else {
-            collectionView.collectionViewLayout = createGridLayout()
-            dataSource = makeGridDataSource()
-            receivePageData()
-        }
-        guard let layout = LayoutType(rawValue: segmentedControl.selectedSegmentIndex) else { return }
         guard let layoutType = LayoutType(rawValue: segmentedControl.selectedSegmentIndex) else { return }
+        
+        dataSource = makeDataSource(for: layoutType)
         collectionView.collectionViewLayout = createLayout(for: layoutType)
+        receivePageData()
     }
     
     @objc private func addProductButtonTapped() {
@@ -92,23 +88,22 @@ final class MainViewController: UIViewController {
     }
     
     // MARK: DataSource
-    private func makeListDataSource() -> DataSource {
-        let registration = UICollectionView.CellRegistration<MarketListCollectionViewCell, ProductItem>.init { cell, indexPath, item in
-            cell.configureCell(with: item, cell, indexPath, self.collectionView)
-        }
-        
+    private func makeDataSource(for layout: LayoutType) -> DataSource {
         return DataSource(collectionView: collectionView) { collectionView, indexPath, item -> UICollectionViewCell? in
-            return collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: item)
-        }
-    }
-    
-    private func makeGridDataSource() -> DataSource {
-        let registration = UICollectionView.CellRegistration<MarketGridCollectionViewCell, ProductItem>.init { cell, indexPath, item in
+            let cell: MarketCollectionCell
+            
+            switch layout {
+            case .list:
+                cell = collectionView.dequeueReusableCell(withClass: MarketListCollectionViewCell.self,
+                                                          for: indexPath)
+            case .grid:
+                cell = collectionView.dequeueReusableCell(withClass: MarketGridCollectionViewCell.self,
+                                                          for: indexPath)
+            }
+            
             cell.configureCell(with: item, cell, indexPath, self.collectionView)
-        }
-        
-        return DataSource(collectionView: collectionView) { collectionView, indexPath, item -> UICollectionViewCell? in
-            return collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: item)
+            
+            return cell
         }
     }
     
