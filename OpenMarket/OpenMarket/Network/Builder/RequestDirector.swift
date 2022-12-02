@@ -35,7 +35,7 @@ struct RequestDirector {
         let boundary = "Boundary-\(UUID().uuidString)"
         let postRequest = builder.setMethod(.post)
             .setPath(URLPath.product.rawValue)
-            .setBody(MultipartManager().makeBody(parameters: dataElement, boundary))
+            .setBody(MultipartManager.shared.makeBody(parameters: dataElement, boundary))
             .setHeaders(["Content-Type": "multipart/form-data; boundary=\(boundary)",
                          "identifier": VendorInfo.identifier])
             .buildRequest()

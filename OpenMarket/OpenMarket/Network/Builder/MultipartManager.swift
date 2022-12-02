@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct MultipartManager {
+class MultipartManager {
+    static let shared = MultipartManager()
+    
+    private init() {}
+    
     func makeBody(parameters: [MultipartData], _ boundary: String) -> Data? {
         var body = Data()
 

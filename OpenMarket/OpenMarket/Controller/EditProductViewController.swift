@@ -115,7 +115,6 @@ final class EditProductViewController: UIViewController {
     
     @objc private func doneButtonTapped() {
         let sessionManager = URLSessionManager()
-        let multipartManager = MultipartManager()
         guard let requestProduct = productView.createRequestProduct() else { return }
         
         guard requestProduct.productName != "",
@@ -127,17 +126,17 @@ final class EditProductViewController: UIViewController {
         
         switch viewMode {
         case .add:
-            postProduct(multipartManager, requestProduct, sessionManager)
+            postProduct(requestProduct, sessionManager)
         case .edit:
-            patchProduct(multipartManager, requestProduct, sessionManager)
+            patchProduct(requestProduct, sessionManager)
         }
     }
     
-    private func patchProduct(_ multipartManager: MultipartManager, _ product: RequestProduct, _ sessionManager: URLSessionManager) {
-        let patchProduct = multipartManager.convertToPatchProducct(product)
-        guard let productNumber = productNumber else { return }
-        guard let patchRequest = RequestDirector().createPatchRequest(productNumber: productNumber,
-                                                             dataElement: patchProduct) else { return }
+    private func patchProduct(_ product: RequestProduct, _ sessionManager: URLSessionManager) {
+        let patchProduct = MultipartManager.shared.convertToPatchProducct(product)
+        guard let productNumber = productNumber,
+              let patchRequest = RequestDirector().createPatchRequest(productNumber: productNumber,
+                                                                      dataElement: patchProduct) else { return }
         
         sessionManager.dataTask(request: patchRequest) { result in
             switch result {
@@ -151,13 +150,12 @@ final class EditProductViewController: UIViewController {
         }
     }
     
-    private func postProduct(_ multipartManager: MultipartManager, _ product: RequestProduct, _ sessionManager: URLSessionManager) {
-        guard dataSource.count != 1 else {
+    private func postProduct(_ product: RequestProduct, _ sessionManager: URLSessionManager) {
             showAlert(title: "상품 등록 불가", message: "최소 1장 이상의 사진을 넣어주십시오.")
             return
         }
         
-        let dataElement = multipartManager.createMultipartData(with: product, multipartImages)
+        let dataElement = MultipartManager.shared.createMultipartData(with: product, images)
         
         guard let postRequest = RequestDirector().createPostRequest(with: dataElement) else { return }
         
