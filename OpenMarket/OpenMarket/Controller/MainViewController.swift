@@ -49,7 +49,8 @@ final class MainViewController: UIViewController {
     }
     
     private func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createListLayout())
+        collectionView = UICollectionView(frame: view.bounds,
+                                          collectionViewLayout: createLayout(for: .list))
         collectionView.delegate = self
         view.addSubview(collectionView)
     }
@@ -80,6 +81,9 @@ final class MainViewController: UIViewController {
             dataSource = makeGridDataSource()
             receivePageData()
         }
+        guard let layout = LayoutType(rawValue: segmentedControl.selectedSegmentIndex) else { return }
+        guard let layoutType = LayoutType(rawValue: segmentedControl.selectedSegmentIndex) else { return }
+        collectionView.collectionViewLayout = createLayout(for: layoutType)
     }
     
     @objc private func addProductButtonTapped() {
@@ -156,35 +160,23 @@ final class MainViewController: UIViewController {
     }
     
     // MARK: Layout
-    private func createListLayout() -> UICollectionViewLayout {
+    private func createLayout(for layout: LayoutType) -> UICollectionViewLayout {
         let layoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                 heightDimension: .fractionalHeight(1.0))
+        let groupsize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .fractionalHeight(layout.groupSizeHeight))
         let item = NSCollectionLayoutItem(layoutSize: layoutSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: layout.spacing,
+                                                     leading: layout.spacing,
+                                                     bottom: layout.spacing,
+                                                     trailing: layout.spacing)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupsize,
+                                                       subitem: item,
+                                                       count: layout.groupCount)
         
-        let groupsize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .fractionalHeight(0.08))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupsize,
-                                                       subitem: item,
-                                                       count: 1)
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        section.interGroupSpacing = 1
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        return layout
-    }
-    
-    private func createGridLayout() -> UICollectionViewLayout {
-        let layoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                heightDimension: .fractionalHeight(1.0))
-        let item = NSCollectionLayoutItem(layoutSize: layoutSize)
-        let groupsize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .fractionalHeight(0.35))
-        item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupsize,
-                                                       subitem: item,
-                                                       count: 2)
         let section = NSCollectionLayoutSection(group: group)
         let layout = UICollectionViewCompositionalLayout(section: section)
+        
         return layout
     }
 }
@@ -198,8 +190,46 @@ extension MainViewController: UICollectionViewDelegate {
     }
 }
 
-fileprivate enum ProductListType {
-    static let list = "LIST"
-    static let grid = "GRID"
+//MARK: Namespace
+extension MainViewController {
     private enum LayoutType: Int {
+        case list
+        case grid
+        
+        var name: String {
+            switch self {
+            case .list:
+                return "LIST"
+            case .grid:
+                return "GRID"
+            }
+        }
+        
+        var spacing: CGFloat {
+            switch self {
+            case .list:
+                return 0
+            case .grid:
+                return 5
+            }
+        }
+        
+        var groupSizeHeight: CGFloat {
+            switch self {
+            case .list:
+                return 0.08
+            case .grid:
+                return 0.35
+            }
+        }
+        
+        var groupCount: Int {
+            switch self {
+            case .list:
+                return 1
+            case .grid:
+                return 2
+            }
+        }
+    }
 }
