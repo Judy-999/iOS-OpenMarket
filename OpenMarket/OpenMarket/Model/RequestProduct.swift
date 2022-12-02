@@ -22,9 +22,3 @@ struct RequestProduct: Encodable {
         case discountedPrice = "discounted_price"
     }
 }
-
-struct MutipartImage {
-    let imageName: String
-    let imageType: String
-    let imageData: Data
-}

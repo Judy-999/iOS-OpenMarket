@@ -5,7 +5,7 @@
 //  Created by Judy on 2022/10/31.
 //
 
-import Foundation
+import UIKit
 
 class MultipartManager {
     static let shared = MultipartManager()
@@ -45,31 +45,8 @@ class MultipartManager {
 }
 
 extension MultipartManager {
-    func createMultipartData(with product: RequestProduct, _ multipartImages: [MutipartImage]) -> [MultipartData] {
-        var data: Data
-        
-        do {
-            data = try DataManager().encode(data: product)
-        } catch {
-            data = Data()
-        }
-     
-        let productData = MultipartData(dispositionName: "params",
-                                     data: data,
-                                     contentType: "application/json",
-                                     fileName: nil)
-        
-        var multipartDatas: [MultipartData] = [productData]
-
-        multipartImages.forEach {
-            let imageData = MultipartData(dispositionName: "images",
-                                          data: $0.imageData,
-                                          contentType: "image/" + $0.imageType,
-                                          fileName: $0.imageName)
-            multipartDatas.append(imageData)
-        }
-
-        return multipartDatas
+    func createMultipartData(with product: RequestProduct, _ images: [UIImage]) -> [MultipartData] {
+        return convertToMultipartData(product) + convertToMultipartImage(images)
     }
     
     func convertToPatchProducct(_ product: RequestProduct) -> Data {
@@ -83,4 +60,57 @@ extension MultipartManager {
         
         return patchData
     }
+    
+    private func convertToMultipartData(_ product: RequestProduct) -> [MultipartData] {
+        var data: Data
+        
+        do {
+            data = try DataManager().encode(data: product)
+        } catch {
+            data = Data()
+        }
+     
+        let productData = MultipartData(dispositionName: "params",
+                                     data: data,
+                                     contentType: "application/json",
+                                     fileName: nil)
+        
+        return [productData]
+    }
+    
+    private func convertToMultipartImage(_ images: [UIImage]) -> [MultipartData] {
+        var multipartImageDatas: [MultipartData] = []
+        
+        images.forEach {
+            let resizedImage = compressImage($0)
+            
+            let multipartImageData = MultipartData(dispositionName: "images",
+                                          data: resizedImage,
+                                          contentType: "image/" + resizedImage.fileExtension,
+                                          fileName: "사진.\(resizedImage.fileExtension)")
+            
+            multipartImageDatas.append(multipartImageData)
+        }
+        
+        return multipartImageDatas
+    }
+    
+    private func compressImage(_ image: UIImage) -> Data {
+        guard var imageData = image.jpegData(compressionQuality: 1.0) else { return Data() }
+        var imageDataSize = imageData.count
+        var scale = 0.9
+        
+        while imageDataSize >= ProductImageInfo.maximumCapacity * 1024 {
+            imageData = image.jpegData(compressionQuality: scale) ?? Data()
+            imageDataSize = imageData.count
+            scale -= 0.1
+        }
+        
+        return imageData
+    }
+}
+
+enum ProductImageInfo {
+    static let numberOfMax = 5
+    static let maximumCapacity = 300
 }

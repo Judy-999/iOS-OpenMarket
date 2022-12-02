@@ -116,7 +116,7 @@ final class ProductInfoViewController: UIViewController {
     private func convertToEditView() {
         let editProductViewController = EditProductViewController()
         guard let detailProduct = detailProduct else { return }
-        editProductViewController.changeToEditMode(data: detailProduct, images: images)
+        editProductViewController.changeToEditMode(with: detailProduct, images)
         navigationController?.pushViewController(editProductViewController, animated: true)
     }
     

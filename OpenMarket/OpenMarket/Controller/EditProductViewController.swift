@@ -14,10 +14,9 @@ final class EditProductViewController: UIViewController {
     }
     
     // MARK: Properties
-    private let productView = AddProductView()
-    private var dataSource: [UIImage] = []
-    private var imagePicker: UIImagePickerController?
-    private var multipartImages: [MutipartImage] = []
+    private let productView = EditProductView()
+    private var imageDataSource: [UIImage] = []
+    private lazy var imagePicker = UIImagePickerController()
     private var viewMode: ViewMode = .add
     private var productNumber: Int?
     
@@ -33,12 +32,12 @@ final class EditProductViewController: UIViewController {
         configureNotificationCenter()
     }
     
-    func changeToEditMode(data: ProductInfo, images: [String]) {
+    func changeToEditMode(with data: ProductInfo, _ images: [String]) {
         productView.configure(with: data)
         productNumber = data.id
         images.forEach {
             guard let cachedImage = ImageCacheManager.shared.object(forKey: NSString(string: $0)) else { return }
-            dataSource.append(cachedImage)
+            imageDataSource.append(cachedImage)
         }
         productView.collectionView.reloadData()
         viewMode = .edit
@@ -66,9 +65,9 @@ final class EditProductViewController: UIViewController {
         navigationItem.rightBarButtonItem = doneBarButton
         navigationItem.setHidesBackButton(true, animated: false)
         
-        if dataSource.isEmpty {
+        if imageDataSource.isEmpty {
             guard let addImage = UIImage(systemName: "plus") else { return }
-            dataSource.append(addImage)
+            imageDataSource.append(addImage)
             configureImagePicker()
         }
     }
@@ -79,10 +78,9 @@ final class EditProductViewController: UIViewController {
     }
     
     private func configureImagePicker() {
-        imagePicker = UIImagePickerController()
-        imagePicker?.sourceType = .photoLibrary
-        imagePicker?.allowsEditing = true
-        imagePicker?.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.allowsEditing = true
+        imagePicker.delegate = self
     }
     
     private func configureNotificationCenter() {
@@ -117,9 +115,9 @@ final class EditProductViewController: UIViewController {
         let sessionManager = URLSessionManager()
         guard let requestProduct = productView.createRequestProduct() else { return }
         
-        guard requestProduct.productName != "",
-              requestProduct.price != 0,
-              requestProduct.description != "" else {
+        guard requestProduct.productName.isEmpty == false,
+              requestProduct.description.isEmpty == false,
+              requestProduct.price != Double.zero else {
             showAlert(title: "상품 등록 불가", message: "필수 항목을 입력해주십시오.\n(이름, 가격, 설명)")
             return
         }
@@ -151,6 +149,9 @@ final class EditProductViewController: UIViewController {
     }
     
     private func postProduct(_ product: RequestProduct, _ sessionManager: URLSessionManager) {
+        let images = Array(imageDataSource[1..<imageDataSource.count])
+        
+        guard images.isEmpty == false else {
             showAlert(title: "상품 등록 불가", message: "최소 1장 이상의 사진을 넣어주십시오.")
             return
         }
@@ -175,19 +176,19 @@ final class EditProductViewController: UIViewController {
 //MARK: CollectionView's DataSource & Delegate
 extension EditProductViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView( _ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        self.dataSource.count
+        self.imageDataSource.count
     }
     
     func collectionView( _ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddProductCollectionViewCell.id, for: indexPath) as? AddProductCollectionViewCell ?? AddProductCollectionViewCell()
-        cell.configure(with: dataSource[indexPath.item])
+        let cell = collectionView.dequeueReusableCell(withClass: AddImageCollectionViewCell.self,
+                                                      for: indexPath)
+        cell.configure(with: imageDataSource[indexPath.item])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row == dataSource.count - 1 {
-            guard let imagePickerCheck = imagePicker else { return }
-            self.present(imagePickerCheck, animated: true)
+        if indexPath.row == Int.zero {
+            self.present(imagePicker, animated: true)
         }
     }
     
@@ -203,42 +204,23 @@ extension EditProductViewController: UICollectionViewDataSource, UICollectionVie
 //MARK: imagePickerController
 extension EditProductViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        var selectedImage = UIImage()
-        
-        guard multipartImages.count != ProductImageInfo.numberOfMax else {
+        guard imageDataSource.count != ProductImageInfo.numberOfMax + 1 else {
             picker.dismiss(animated: true, completion: nil)
-            showAlert(title: "사진 등록 불가능", message: "사진은 최대 5장까지 가능합니다.")
+            showAlert(title: "사진 등록 불가능", message: "사진은 최대 \(ProductImageInfo.numberOfMax)장까지 가능합니다.")
             return
         }
+        
+        var selectedImage = UIImage()
         
         if let newImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             selectedImage = newImage
         } else if let newImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             selectedImage = newImage
         }
-        
-        let resizedImage = compressImage(selectedImage)
-        
-        dataSource.insert(selectedImage, at: 0)
-        multipartImages.append(MutipartImage(imageName: "\(dataSource.count - 1)번사진.\(resizedImage.fileExtension)", imageType: resizedImage.fileExtension, imageData: resizedImage))
-        
-        picker.dismiss(animated: true, completion: nil)
-        
+
+        imageDataSource.insert(selectedImage, at: imageDataSource.count)
         productView.collectionView.reloadData()
-    }
-    
-    private func compressImage(_ image: UIImage) -> Data {
-        guard var imageData = image.jpegData(compressionQuality: 1.0) else { return Data() }
-        var imageDataSize = imageData.count
-        var scale = 0.9
-        
-        while imageDataSize >= ProductImageInfo.maximumCapacity * 1024 {
-            imageData = image.jpegData(compressionQuality: scale) ?? Data()
-            imageDataSize = imageData.count
-            scale -= 0.1
-        }
-       
-        return imageData
+        picker.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -247,10 +229,5 @@ extension EditProductViewController {
     private enum MarketInfo {
         static let addProductTitle = "상품등록"
         static let editProductTitle = "상품수정"
-    }
-    
-    private enum ProductImageInfo {
-        static let numberOfMax = 5
-        static let maximumCapacity = 300
     }
 }
