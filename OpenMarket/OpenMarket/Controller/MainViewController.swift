@@ -51,8 +51,6 @@ final class MainViewController: UIViewController {
         collectionView = UICollectionView(frame: view.bounds,
                                           collectionViewLayout: createLayout(for: .list))
         collectionView.delegate = self
-        collectionView.register(cellWithClass: MarketListCollectionViewCell.self)
-        collectionView.register(cellWithClass: MarketGridCollectionViewCell.self)
         view.addSubview(collectionView)
     }
     
@@ -89,21 +87,25 @@ final class MainViewController: UIViewController {
     
     // MARK: DataSource
     private func makeDataSource(for layout: LayoutType) -> DataSource {
+        let listRegistration = UICollectionView.CellRegistration<MarketListCollectionViewCell, ProductItem>.init { cell, indexPath, item in
+            cell.configure(with: item)
+        }
+        
+        let gridRegistration = UICollectionView.CellRegistration<MarketGridCollectionViewCell, ProductItem>.init { cell, indexPath, item in
+            cell.configure(with: item)
+        }
+        
         return DataSource(collectionView: collectionView) { collectionView, indexPath, item -> UICollectionViewCell? in
-            let cell: MarketCollectionCell
-            
             switch layout {
             case .list:
-                cell = collectionView.dequeueReusableCell(withClass: MarketListCollectionViewCell.self,
-                                                          for: indexPath)
+                return collectionView.dequeueConfiguredReusableCell(using: listRegistration,
+                                                                    for: indexPath,
+                                                                    item: item)
             case .grid:
-                cell = collectionView.dequeueReusableCell(withClass: MarketGridCollectionViewCell.self,
-                                                          for: indexPath)
+                return collectionView.dequeueConfiguredReusableCell(using: gridRegistration,
+                                                                    for: indexPath,
+                                                                    item: item)
             }
-            
-            cell.configure(with: item)
-            
-            return cell
         }
     }
     
