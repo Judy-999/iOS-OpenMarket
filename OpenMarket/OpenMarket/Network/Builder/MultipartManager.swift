@@ -14,31 +14,29 @@ class MultipartManager {
     
     func makeBody(parameters: [MultipartData], _ boundary: String) -> Data? {
         var body = Data()
-
-        guard let fristBoundary = "--\(boundary)\r\n".data(using: .utf8) else { return nil }
-
+        let firstBoundary = "--\(boundary)\r\n"
+        let lastBoundary = "--\(boundary)--\r\n"
+        
         for param in parameters {
-            guard let disposition = "Content-Disposition:form-data; name=\"\(param.dispositionName)\"".data(using: .utf8),
-                  let value = param.data,
-                  let space = "\r\n".data(using: .utf8),
-                  let contentType = "Content-Type: \(param.contentType)\r\n\r\n".data(using: .utf8) else { return nil }
-
-            body.append(contentsOf: fristBoundary)
-            body.append(contentsOf: disposition)
-
-            if let fileName = param.fileName {
-                guard let fileName = "; filename=\"\(fileName)\"".data(using: .utf8) else { return nil }
-                body.append(contentsOf: fileName)
+            let disposition = "Content-Disposition:form-data; name=\"\(param.dispositionName)\""
+            let space = "\r\n"
+            let contentType = "Content-Type: \(param.contentType)\r\n\r\n"
+            guard let value = param.data else { return nil }
+            
+            body.appendData(firstBoundary)
+            body.appendData(disposition)
+            
+            if let name = param.fileName {
+                body.appendData("; filename=\"\(name)\"")
             }
             
-            body.append(contentsOf: space)
-            body.append(contentsOf: contentType)
-            body.append(contentsOf: value)
-            body.append(contentsOf: space)
+            body.appendData(space)
+            body.appendData(contentType)
+            body.append(value)
+            body.appendData(space)
         }
-
-        guard let lastBoundary = "--\(boundary)--\r\n".data(using: .utf8) else { return nil }
-        body.append(contentsOf: lastBoundary)
+        
+        body.appendData(lastBoundary)
         
         return body
     }
@@ -69,11 +67,11 @@ extension MultipartManager {
         } catch {
             data = Data()
         }
-     
+        
         let productData = MultipartData(dispositionName: "params",
-                                     data: data,
-                                     contentType: "application/json",
-                                     fileName: nil)
+                                        data: data,
+                                        contentType: "application/json",
+                                        fileName: nil)
         
         return [productData]
     }
@@ -81,13 +79,13 @@ extension MultipartManager {
     private func convertToMultipartImage(_ images: [UIImage]) -> [MultipartData] {
         var multipartImageDatas: [MultipartData] = []
         
-        images.forEach {
-            let resizedImage = compressImage($0)
+        images.enumerated().forEach {
+            let resizedImage = compressImage($0.1)
             
             let multipartImageData = MultipartData(dispositionName: "images",
-                                          data: resizedImage,
-                                          contentType: "image/" + resizedImage.fileExtension,
-                                          fileName: "사진.\(resizedImage.fileExtension)")
+                                                   data: resizedImage,
+                                                   contentType: "image/" + resizedImage.fileExtension,
+                                                   fileName: "\($0.0)번 사진.\(resizedImage.fileExtension)")
             
             multipartImageDatas.append(multipartImageData)
         }
@@ -108,9 +106,4 @@ extension MultipartManager {
         
         return imageData
     }
-}
-
-enum ProductImageInfo {
-    static let numberOfMax = 5
-    static let maximumCapacity = 300
 }

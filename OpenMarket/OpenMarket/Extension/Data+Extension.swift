@@ -23,4 +23,10 @@ extension Data {
         }
         return ext
     }
+    
+    mutating func appendData(_ stringData: String) {
+        if let data = stringData.data(using: .utf8) {
+            self.append(data)
+        }
+    }
 }

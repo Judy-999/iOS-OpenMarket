@@ -127,6 +127,7 @@
 				20B4AB9B290F975200BF6C7A /* HTTPMethod.swift */,
 				20B4AB9D290F978500BF6C7A /* MarketRequest.swift */,
 				20226832291CC6B3005E11CE /* MultipartData.swift */,
+				20B4AB9F290FA10400BF6C7A /* Namespace.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -171,7 +172,6 @@
 			children = (
 				20CC8D8128FF967400CD1613 /* RequestBuilder.swift */,
 				20CC8D8428FFA5E800CD1613 /* RequestDirector.swift */,
-				20B4AB9F290FA10400BF6C7A /* Namespace.swift */,
 				20B4ABA1290FA1A200BF6C7A /* MultipartManager.swift */,
 			);
 			path = Builder;
