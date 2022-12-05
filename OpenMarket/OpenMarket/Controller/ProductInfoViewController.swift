@@ -127,13 +127,13 @@ final class ProductInfoViewController: UIViewController {
     
     // MARK: DataSource
     private func makeDataSource() -> DataSource {
-        let infoRegistration = UICollectionView.CellRegistration<DetailInfoCollectionViewCell, ProductInfoItem>.init { cell, indexPath, item in
-            cell.configureCell(with: item)
+        let infoRegistration = UICollectionView.CellRegistration<ProductInfoCollectionViewCell, ProductInfoItem>.init { cell, indexPath, item in
+            cell.configure(with: item)
         }
         
-        let imageRegistration = UICollectionView.CellRegistration<DetailImageCollectionViewCell, ProductInfoItem>.init { cell, indexPath, item in
-            cell.imageView.configureImage(with: item.thumbnailURL)
-            cell.imageNumberLabel.text = "\(indexPath.row+1)/\(self.images.count)"
+        let imageRegistration = UICollectionView.CellRegistration<ProductImageCollectionViewCell, ProductInfoItem>.init { cell, indexPath, item in
+            cell.configure(with: item.thumbnailURL,
+                           number: "\(indexPath.row+1)/\(self.images.count)")
         }
         
         return DataSource(collectionView: collectionView) { collectionView, indexPath, item -> UICollectionViewCell? in

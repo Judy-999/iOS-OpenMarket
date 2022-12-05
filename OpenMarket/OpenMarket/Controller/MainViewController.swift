@@ -101,7 +101,7 @@ final class MainViewController: UIViewController {
                                                           for: indexPath)
             }
             
-            cell.configureCell(with: item, cell, indexPath, self.collectionView)
+            cell.configure(with: item)
             
             return cell
         }

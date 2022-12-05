@@ -58,7 +58,7 @@ final class MarketGridCollectionViewCell: UICollectionViewCell, MarketCollection
     }
     
     // MARK: - Methods
-    func configureCell(with item: ProductItem, _ cell: UICollectionViewCell, _ indexPath: IndexPath, _ collectionView: UICollectionView) {
+    func configure(with item: ProductItem) {
         self.nameLabel.text = item.name
         
         if item.price == item.bargainPrice {

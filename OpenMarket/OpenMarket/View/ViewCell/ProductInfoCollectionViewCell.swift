@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DetailInfoCollectionViewCell: UICollectionViewCell {
+final class ProductInfoCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -75,7 +75,7 @@ final class DetailInfoCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Methods
-    func configureCell(with item: ProductInfoItem) {
+    func configure(with item: ProductInfoItem) {
         nameLabel.text = item.name
         stockLabel.text = "남은수량 : \(item.stock)"
         descriptionView.text = item.description

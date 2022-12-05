@@ -7,15 +7,15 @@
 
 import UIKit
 
-final class DetailImageCollectionViewCell: UICollectionViewCell {
+final class ProductImageCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
-    let imageView: SessionImageView = {
+    private let imageView: SessionImageView = {
         let image = SessionImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
     
-    let imageNumberLabel: UILabel = {
+    private let imageNumberLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -41,6 +41,12 @@ final class DetailImageCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
+    }
+    
+    // MARK: - Methods
+    func configure(with imageURL: String, number: String) {
+        imageNumberLabel.text = number
+        imageView.configureImage(with: imageURL)
     }
     
     private func setupView() {
