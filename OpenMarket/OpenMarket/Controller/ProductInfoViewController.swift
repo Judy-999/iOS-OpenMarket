@@ -20,8 +20,7 @@ final class ProductInfoViewController: UIViewController {
     // MARK: Properties
     private lazy var dataSource = makeDataSource()
     private var collectionView: UICollectionView!
-    private var detailProduct: ProductInfo?
-    private var detailProductItem: ProductInfoItem?
+    private var productInfo: ProductInfo?
     private var images: [String] = []
     private var productNumber: Int?
     
@@ -42,23 +41,23 @@ final class ProductInfoViewController: UIViewController {
         let editProductBarButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
                                                    style: .plain,
                                                    target: self,
-                                                   action: #selector(editProductButtonDidTapped))
+                                                   action: #selector(editProductButtonTapped))
         
         let backBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
                                             style: .plain,
                                             target: self,
-                                            action: #selector(backBarButtonDidTapped))
+                                            action: #selector(backBarButtonTapped))
         
         navigationItem.rightBarButtonItem = editProductBarButton
         navigationItem.hidesBackButton = true
         navigationItem.leftBarButtonItem = backBarButton
     }
     
-    @objc private func backBarButtonDidTapped() {
+    @objc private func backBarButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc private func editProductButtonDidTapped() {
+    @objc private func editProductButtonTapped() {
         let editAlert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let editAction = UIAlertAction(title: "수정", style: .default) { _ in
             self.convertToEditView()
@@ -83,10 +82,9 @@ final class ProductInfoViewController: UIViewController {
         
         let confirmAction = UIAlertAction(title: "확인", style: .default) { [self] _ in
             let sessionManager = URLSessionManager()
-            guard let inputSecret = checkAlert.textFields?.first?.text else { return }
-            guard let productNumber = productNumber else { return }
-            
-            guard let deleteURIRequest = RequestDirector().createDeleteURIRequest(vendorSecret: inputSecret,
+            guard let inputSecret = checkAlert.textFields?.first?.text,
+                  let productNumber = productNumber,
+                  let deleteURIRequest = RequestDirector().createDeleteURIRequest(vendorSecret: inputSecret,
                                                                                   productNumber: productNumber) else { return }
             
             sessionManager.dataTask(request: deleteURIRequest) { result in
@@ -101,11 +99,11 @@ final class ProductInfoViewController: UIViewController {
                                 self.navigationController?.popViewController(animated: true)
                             }
                         case .failure(_):
-                            self.showAlert(title: "서버 통신 실패", message: "데이터를 삭제하지 못했습니다.")
+                            self.showAlert(title: "서버 통신 실패", message: "상품을 삭제하지 못했습니다.")
                         }
                     }
                 case .failure(_):
-                    self.showAlert(title: "실패", message: "비밀번호가 일치하지 않습니다.")
+                    self.showAlert(title: "상품 삭제 실패", message: "비밀번호가 일치하지 않습니다.")
                 }
             }
         }
@@ -115,8 +113,8 @@ final class ProductInfoViewController: UIViewController {
     
     private func convertToEditView() {
         let editProductViewController = EditProductViewController()
-        guard let detailProduct = detailProduct else { return }
-        editProductViewController.changeToEditMode(with: detailProduct, images)
+        guard let productInfo = productInfo else { return }
+        editProductViewController.changeToEditMode(with: productInfo, images)
         navigationController?.pushViewController(editProductViewController, animated: true)
     }
     
@@ -137,12 +135,15 @@ final class ProductInfoViewController: UIViewController {
         }
         
         return DataSource(collectionView: collectionView) { collectionView, indexPath, item -> UICollectionViewCell? in
-            guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
+            guard let section = Section(rawValue: indexPath.section) else { return nil }
+            
             switch section {
             case .image:
-                return collectionView.dequeueConfiguredReusableCell(using: imageRegistration, for: indexPath, item: item)
+                return collectionView.dequeueConfiguredReusableCell(using: imageRegistration,
+                                                                    for: indexPath, item: item)
             case .info:
-                return collectionView.dequeueConfiguredReusableCell(using: infoRegistration, for: indexPath, item: item)
+                return collectionView.dequeueConfiguredReusableCell(using: infoRegistration,
+                                                                    for: indexPath, item: item)
             }
         }
     }
@@ -151,8 +152,8 @@ final class ProductInfoViewController: UIViewController {
     private func receiveDetailData() {
         let sessionManager = URLSessionManager()
         
-        guard let productNumber = productNumber else { return }
-        guard let productDetailRequest = RequestDirector().createGetDetailRequest(productNumber) else { return }
+        guard let productNumber = productNumber,
+              let productDetailRequest = RequestDirector().createGetDetailRequest(productNumber) else { return }
         
         LoadingIndicator.showLoading(on: view)
         sessionManager.dataTask(request: productDetailRequest) { result in
@@ -173,26 +174,26 @@ final class ProductInfoViewController: UIViewController {
     }
     
     private func applySnapshots() {
-        var itemSnapshot = SnapShot()
-        guard let detailProduct = detailProductItem else { return }
+        guard let productInfo = productInfo else {  return }
+        let detailProductItem = ProductInfoItem(product: productInfo)
         var detailImages: [ProductInfoItem] = []
+        var itemSnapshot = SnapShot()
         
         images.forEach {
-            detailImages.append(ProductInfoItem(detailItem: detailProduct, imageURL: $0))
+            detailImages.append(ProductInfoItem(detailItem: detailProductItem, imageURL: $0))
         }
         itemSnapshot.appendSections([.image, .info])
         itemSnapshot.appendItems(detailImages , toSection: .image)
-        itemSnapshot.appendItems([detailProduct], toSection: .info)
+        itemSnapshot.appendItems([detailProductItem], toSection: .info)
         
         dataSource.apply(itemSnapshot, animatingDifferences: false)
     }
     
     private func decodeResult(_ data: Data) {
         do {
-            self.detailProduct = try DataManager().decode(type: ProductInfo.self, data: data)
-            guard let detailProduct = detailProduct else {  return }
-            self.detailProductItem = ProductInfoItem(product: detailProduct)
-            self.images = detailProduct.images.map { $0.url }
+            self.productInfo = try DataManager().decode(type: ProductInfo.self, data: data)
+            guard let productInfo = productInfo else {  return }
+            self.images = productInfo.images.map { $0.url }
         } catch {
             DispatchQueue.main.async {
                 self.showAlert(title: "데이터 변환 실패", message: "가져온 데이터를 읽을 수 없습니다.")
@@ -203,9 +204,7 @@ final class ProductInfoViewController: UIViewController {
     private func showAlert(title: String, message: String) {
         let failureAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         failureAlert.addAction(UIAlertAction(title: "확인", style: .default))
-        DispatchQueue.main.async {
-            self.present(failureAlert, animated: true)
-        }
+        self.present(failureAlert, animated: true)
     }
     
     // MARK: Layout
@@ -216,25 +215,33 @@ final class ProductInfoViewController: UIViewController {
             
             switch sectionKind {
             case .image:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.45))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                let layoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                      heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: layoutSize)
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                       heightDimension: .fractionalHeight(0.45))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                               subitems: [item])
                 
                 section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .groupPagingCentered
                 
             case .info:
-                let layoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let layoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                        heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: layoutSize)
-                let groupsize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.55))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupsize, subitem: item, count: 1)
-                
-                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+                let groupsize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                       heightDimension: .fractionalHeight(0.55))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupsize,
+                                                               subitem: item,
+                                                               count: 1)
+
                 section = NSCollectionLayoutSection(group: group)
             }
+            
             return section
         }
+        
         return UICollectionViewCompositionalLayout(sectionProvider: sectionProvider)
     }
 }
