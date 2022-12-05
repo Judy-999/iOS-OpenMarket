@@ -9,27 +9,35 @@ import UIKit
 
 final class MarketGridCollectionViewCell: UICollectionViewCell, MarketCollectionCell {
     // MARK: - Properties
-    private let imageView: SessionImageView = {
+    let imageView: SessionImageView = {
         let imageView = SessionImageView()
         return imageView
     }()
     
-    private let nameLabel: UILabel = {
+    let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 20)
         return label
     }()
     
-    private let priceLabel: UILabel = {
+    let priceLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .body)
+        label.textColor = .systemGray
+        label.textAlignment = .center
+        return label
+    }()
+    
+    let bargainPriceLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .body)
         label.textColor = .systemRed
         label.textAlignment = .center
-        label.numberOfLines = 2
+        label.isHidden = true
         return label
     }()
     
-    private let stockLabel: UILabel = {
+    let stockLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .body)
         label.textColor = .systemGray
@@ -58,27 +66,6 @@ final class MarketGridCollectionViewCell: UICollectionViewCell, MarketCollection
     }
     
     // MARK: - Methods
-    func configure(with item: ProductItem) {
-        self.nameLabel.text = item.name
-        
-        if item.price == item.bargainPrice {
-            self.priceLabel.text = item.price
-            self.priceLabel.textColor = .systemGray
-        } else {
-            let price = item.price + "\n" + item.bargainPrice
-            self.priceLabel.attributedText = price.addDiscountAttribute(with: item.price.count, item.bargainPrice.count)
-        }
-        
-        if item.stock != "0" {
-            self.stockLabel.text = "잔여수량 : " + item.stock
-        } else {
-            self.stockLabel.text = "품절"
-            self.stockLabel.textColor = .systemOrange
-        }
-
-        imageView.configureImage(with: item.thumbnailURL)
-    }
-    
     private func setupView() {
         addSubView()
         setupConstraints()
@@ -92,6 +79,7 @@ final class MarketGridCollectionViewCell: UICollectionViewCell, MarketCollection
         verticalStackView.addArrangedSubview(imageView)
         verticalStackView.addArrangedSubview(nameLabel)
         verticalStackView.addArrangedSubview(priceLabel)
+        verticalStackView.addArrangedSubview(bargainPriceLabel)
         verticalStackView.addArrangedSubview(stockLabel)
         
         contentView.addSubview(verticalStackView)
@@ -117,6 +105,6 @@ final class MarketGridCollectionViewCell: UICollectionViewCell, MarketCollection
         super.prepareForReuse()
         imageView.cancelImageLoding()
         stockLabel.textColor = .systemGray
-        priceLabel.textColor = .systemRed
+        bargainPriceLabel.isHidden = true
     }
 }

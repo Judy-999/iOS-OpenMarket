@@ -9,26 +9,34 @@ import UIKit
 
 final class MarketListCollectionViewCell: UICollectionViewCell, MarketCollectionCell {
     // MARK: - Properties
-    private let imageView: SessionImageView = {
+    let imageView: SessionImageView = {
         let imageView = SessionImageView()
         return imageView
     }()
     
-    private let nameLabel: UILabel = {
+    let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 20)
         return label
     }()
     
-    private let priceLabel: UILabel = {
+    let priceLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .systemRed
-        label.numberOfLines = 2
+        label.textColor = .systemGray
+        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return label
     }()
     
-    private let stockLabel: UILabel = {
+    let bargainPriceLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .body)
+        label.textColor = .systemRed
+        label.isHidden = true
+        return label
+    }()
+    
+    let stockLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .body)
         label.textColor = .systemGray
@@ -70,6 +78,15 @@ final class MarketListCollectionViewCell: UICollectionViewCell, MarketCollection
         return stackView
     }()
     
+    private let priceStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.spacing = 10
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     private let entireStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.alignment = .fill
@@ -92,27 +109,6 @@ final class MarketListCollectionViewCell: UICollectionViewCell, MarketCollection
     }
     
     // MARK: - Methods
-    func configure(with item: ProductItem) {
-        self.nameLabel.text = item.name
-        
-        if item.price == item.bargainPrice {
-            self.priceLabel.text = item.price
-            self.priceLabel.textColor = .systemGray
-        } else {
-            let price = item.price + " " + item.bargainPrice
-            self.priceLabel.attributedText = price.addDiscountAttribute(with: item.price.count, item.bargainPrice.count)
-        }
-        
-        if item.stock != "0" {
-            self.stockLabel.text = "잔여수량 : " + item.stock
-        } else {
-            self.stockLabel.text = "품절"
-            self.stockLabel.textColor = .systemOrange
-        }
-        
-        imageView.configureImage(with: item.thumbnailURL)
-    }
-    
     private func setupView() {
         addSubView()
         setupConstraints()
@@ -128,8 +124,11 @@ final class MarketListCollectionViewCell: UICollectionViewCell, MarketCollection
         horizontalStackView.addArrangedSubview(nameLabel)
         horizontalStackView.addArrangedSubview(subHorizontalStackView)
         
+        priceStackView.addArrangedSubview(priceLabel)
+        priceStackView.addArrangedSubview(bargainPriceLabel)
+        
         verticalStackView.addArrangedSubview(horizontalStackView)
-        verticalStackView.addArrangedSubview(priceLabel)
+        verticalStackView.addArrangedSubview(priceStackView)
         
         entireStackView.addArrangedSubview(imageView)
         entireStackView.addArrangedSubview(verticalStackView)
@@ -160,7 +159,7 @@ final class MarketListCollectionViewCell: UICollectionViewCell, MarketCollection
         super.prepareForReuse()
         imageView.cancelImageLoding()
         stockLabel.textColor = .systemGray
-        priceLabel.textColor = .systemRed
+        bargainPriceLabel.isHidden = true
     }
 }
 

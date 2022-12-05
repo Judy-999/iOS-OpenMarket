@@ -20,10 +20,20 @@ final class ProductInfoCollectionViewCell: UICollectionViewCell {
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .systemRed
+        label.textColor = .systemGray
         label.textAlignment = .right
         label.adjustsFontSizeToFitWidth = true
-        label.numberOfLines = 2
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let bargainPriceLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .body)
+        label.textColor = .systemRed
+        label.textAlignment = .right
+        label.isHidden = true
+        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -79,13 +89,11 @@ final class ProductInfoCollectionViewCell: UICollectionViewCell {
         nameLabel.text = item.name
         stockLabel.text = "남은수량 : \(item.stock)"
         descriptionView.text = item.description
+        priceLabel.text = item.price
         
-        if item.price == item.bargainPrice {
-            self.priceLabel.text = item.price
-            self.priceLabel.textColor = .systemGray
-        } else {
-            let price = item.price + "\n" + item.bargainPrice
-            self.priceLabel.attributedText = price.addDiscountAttribute(with: item.price.count, item.bargainPrice.count)
+        if item.price != item.bargainPrice {
+            bargainPriceLabel.isHidden = false
+            bargainPriceLabel.attributedText = item.bargainPrice.addDiscountAttribute
         }
     }
     
@@ -100,6 +108,7 @@ final class ProductInfoCollectionViewCell: UICollectionViewCell {
         
         verticalStackView.addArrangedSubview(horizontalStackView)
         verticalStackView.addArrangedSubview(priceLabel)
+        verticalStackView.addArrangedSubview(bargainPriceLabel)
         verticalStackView.addArrangedSubview(descriptionView)
         
         contentView.addSubview(verticalStackView)
