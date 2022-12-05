@@ -12,7 +12,6 @@ final class EditProductView: UIView {
     private let flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 5.0
         layout.itemSize = CGSize(width: 120, height: 120)
         return layout
     }()
@@ -27,8 +26,8 @@ final class EditProductView: UIView {
     private let productNameTextfield: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
-        textField.placeholder = "상품명"
-        textField.font = .preferredFont(forTextStyle: .caption1)
+        textField.placeholder = ProductInput.name
+        textField.font = .preferredFont(forTextStyle: .subheadline)
         textField.keyboardType = .default
         textField.adjustsFontForContentSizeCategory = true
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -38,8 +37,8 @@ final class EditProductView: UIView {
     private let priceTextfield: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
-        textField.placeholder = "상품가격"
-        textField.font = .preferredFont(forTextStyle: .caption1)
+        textField.placeholder = ProductInput.price
+        textField.font = .preferredFont(forTextStyle: .subheadline)
         textField.keyboardType = .numberPad
         textField.adjustsFontForContentSizeCategory = true
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -49,8 +48,8 @@ final class EditProductView: UIView {
     private let discountedPriceTextfield: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
-        textField.placeholder = "할인금액"
-        textField.font = .preferredFont(forTextStyle: .caption1)
+        textField.placeholder = ProductInput.discount
+        textField.font = .preferredFont(forTextStyle: .subheadline)
         textField.keyboardType = .numberPad
         textField.adjustsFontForContentSizeCategory = true
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -60,8 +59,8 @@ final class EditProductView: UIView {
     private let stockTextfield: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
-        textField.placeholder = "재고수량"
-        textField.font = .preferredFont(forTextStyle: .caption1)
+        textField.placeholder = ProductInput.stock
+        textField.font = .preferredFont(forTextStyle: .subheadline)
         textField.keyboardType = .numberPad
         textField.adjustsFontForContentSizeCategory = true
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -78,10 +77,12 @@ final class EditProductView: UIView {
     
     let descriptionTextView: UITextView = {
         let textView = UITextView()
-        textView.font = .preferredFont(forTextStyle: .caption1)
+        textView.font = .preferredFont(forTextStyle: .subheadline)
         textView.adjustsFontForContentSizeCategory = true
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        textView.layer.borderColor = UIColor.systemGray5.cgColor
+        textView.layer.borderWidth = 1
+        textView.textContainerInset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
         textView.keyboardDismissMode = .onDrag
         return textView
     }()
@@ -89,7 +90,7 @@ final class EditProductView: UIView {
     private let priceStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 10
+        stackView.spacing = 8
         stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -107,7 +108,7 @@ final class EditProductView: UIView {
     let entireStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 10
+        stackView.spacing = 8
         stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -203,3 +204,11 @@ final class EditProductView: UIView {
     }
 }
 
+extension EditProductView {
+    private enum ProductInput {
+        static let name = "상품명"
+        static let price = "상품 가격"
+        static let discount = "할인 금액"
+        static let stock = "재고 수량"
+    }
+}
