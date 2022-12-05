@@ -75,12 +75,8 @@ final class MarketGridCollectionViewCell: UICollectionViewCell, MarketCollection
             self.stockLabel.text = "품절"
             self.stockLabel.textColor = .systemOrange
         }
-        
-        if let cachedImage = ImageCacheManager.shared.object(forKey: NSString(string: item.thumbnailURL)) {
-            imageView.image = cachedImage
-        } else {
-            imageView.configureImage(url: item.thumbnailURL, cell, indexPath, collectionView)
-        }
+
+        imageView.configureImage(with: item.thumbnailURL)
     }
     
     private func setupView() {
@@ -119,6 +115,7 @@ final class MarketGridCollectionViewCell: UICollectionViewCell, MarketCollection
 
     override func prepareForReuse(){
         super.prepareForReuse()
+        imageView.cancelImageLoding()
         stockLabel.textColor = .systemGray
         priceLabel.textColor = .systemRed
     }

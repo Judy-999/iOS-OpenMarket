@@ -8,27 +8,42 @@
 import UIKit
 
 class SessionImageView: UIImageView {
-    func configureImage(url: String, _ cell: UICollectionViewCell, _ indexPath: IndexPath, _ collectionView: UICollectionView) {
-        let cachedKey = NSString(string: url)
+    var imageDataTask: URLSessionDataTask?
+    
+    func cancelImageLoding() {
+        self.image = UIImage()
+        imageDataTask?.cancel()
+        imageDataTask = nil
+    }
+    
+    func configureImage(with imageURL: String) {
+        let cachedKey = NSString(string: imageURL)
         
-        guard let imageRequest = RequestBuilder().setMethod(.get)
-            .setBaseURL(url)
-            .setPath("")
-            .buildRequest() else { return }
+        if let cachedImage = ImageCacheManager.shared.object(forKey: cachedKey) {
+            DispatchQueue.main.async {
+                self.image = cachedImage
+            }
+        } else {
+            loadImage(with: imageURL, key: cachedKey)
+        }
+    }
+    
+    private func loadImage(with imageURL: String, key: NSString) {
+        guard let imageURL = URL(string: imageURL) else { return }
+        let imageRequest = URLRequest(url: imageURL)
                 
-        URLSessionManager().dataTask(request: imageRequest) { result in
-            switch result {
-            case .success(let data):
+        imageDataTask = URLSession.shared.dataTask(with: imageRequest) { data, _, error in
+            if let data = data {
                 guard let imageData = UIImage(data: data) else { return }
                 
                 DispatchQueue.main.async {
-                    ImageCacheManager.shared.setObject(imageData, forKey: cachedKey)
-                    guard indexPath == collectionView.indexPath(for: cell) else { return }
                     self.image = imageData
                 }
-            case .failure(_):
-                print("서버 통신 실패")
+                
+                ImageCacheManager.shared.setObject(imageData, forKey: key)
             }
         }
+        
+        imageDataTask?.resume()
     }
 }

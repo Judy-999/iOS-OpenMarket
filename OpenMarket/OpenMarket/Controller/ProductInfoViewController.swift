@@ -132,7 +132,7 @@ final class ProductInfoViewController: UIViewController {
         }
         
         let imageRegistration = UICollectionView.CellRegistration<DetailImageCollectionViewCell, ProductInfoItem>.init { cell, indexPath, item in
-            cell.imageView.configureImage(url: item.thumbnailURL, cell, indexPath, self.collectionView)
+            cell.imageView.configureImage(with: item.thumbnailURL)
             cell.imageNumberLabel.text = "\(indexPath.row+1)/\(self.images.count)"
         }
         
