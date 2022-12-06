@@ -45,7 +45,7 @@ final class MarketListCollectionViewCell: UICollectionViewCell, MarketCollection
     
     private let accessaryImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "greaterthan")
+        imageView.image = MarketImage.indicator
         imageView.tintColor = .systemGray
         return imageView
     }()

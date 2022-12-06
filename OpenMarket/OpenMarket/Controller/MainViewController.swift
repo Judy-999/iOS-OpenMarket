@@ -58,7 +58,7 @@ final class MainViewController: UIViewController {
     private func configureUI() {
         configureCollectionView()
         
-        let addProductBarButton = UIBarButtonItem(image: UIImage(systemName: "plus"),
+        let addProductBarButton = UIBarButtonItem(image: MarketImage.add,
                                                   style: .plain,
                                                   target: self,
                                                   action: #selector(addProductButtonTapped))

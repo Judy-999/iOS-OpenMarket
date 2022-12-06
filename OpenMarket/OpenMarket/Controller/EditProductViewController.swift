@@ -45,11 +45,11 @@ final class EditProductViewController: UIViewController {
     
     //MARK: configure
     private func configureUI() {
-        let cancelBarButton = UIBarButtonItem(title: "Cancel",
+        let cancelBarButton = UIBarButtonItem(title: MarketInfo.cancel,
                                               style: .plain,
                                               target: self,
-                                              action: #selector(cancelButtonDidTap))
-        let doneBarButton = UIBarButtonItem(title: "Done",
+                                              action: #selector(cancelButtonTapped))
+        let doneBarButton = UIBarButtonItem(title: MarketInfo.done,
                                             style: .plain,
                                             target: self,
                                             action: #selector(doneButtonTapped))
@@ -66,8 +66,8 @@ final class EditProductViewController: UIViewController {
         navigationItem.setHidesBackButton(true, animated: false)
         
         if imageDataSource.isEmpty {
-            guard let addImage = UIImage(systemName: "plus") else { return }
-            imageDataSource.append(addImage)
+            guard let photoImage = MarketImage.photo else { return }
+            imageDataSource.append(photoImage)
             configureImagePicker()
         }
     }
@@ -226,5 +226,7 @@ extension EditProductViewController {
     private enum MarketInfo {
         static let addProductTitle = "상품등록"
         static let editProductTitle = "상품수정"
+        static let done = "Done"
+        static let cancel = "Cancel"
     }
 }

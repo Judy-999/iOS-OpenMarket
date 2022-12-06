@@ -38,12 +38,12 @@ final class ProductInfoViewController: UIViewController {
     private func configureUI() {
         configureCollectionView()
         
-        let editProductBarButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
+        let editProductBarButton = UIBarButtonItem(image: MarketImage.option,
                                                    style: .plain,
                                                    target: self,
                                                    action: #selector(editProductButtonTapped))
         
-        let backBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
+        let backBarButton = UIBarButtonItem(image: MarketImage.back,
                                             style: .plain,
                                             target: self,
                                             action: #selector(backBarButtonTapped))
