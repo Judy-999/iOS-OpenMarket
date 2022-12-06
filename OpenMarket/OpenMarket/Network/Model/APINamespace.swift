@@ -9,9 +9,9 @@ enum URLHost {
     static let url = "https://openmarket.yagom-academy.kr"
 }
 
-enum URLPath: String {
-    case healthChecker = "/healthChecker"
-    case product = "/api/products"
+enum URLPath {
+    static let healthChecker = "/healthChecker"
+    static let product = "/api/products"
 }
 
 enum Query {
@@ -22,9 +22,4 @@ enum Query {
 enum VendorInfo {
     static let secret = "zxmv177bnjs1233"
     static let identifier = "8aa4a1f1-4abe-11ed-a200-a7e762e3bb4e"
-}
-
-enum ProductImageInfo {
-    static let numberOfMax = 5
-    static let maximumCapacity = 300
 }

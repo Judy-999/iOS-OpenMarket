@@ -16,7 +16,7 @@ struct RequestDirector {
     
     func createGetRequest(page: Int, itemCount: Int) -> MarketRequest? {
         let getRequest = builder.setMethod(.get)
-            .setPath(URLPath.product.rawValue)
+            .setPath(URLPath.product)
             .setQuery([Query.page: page, Query.itemPerPage: itemCount])
             .buildRequest()
         
@@ -25,7 +25,7 @@ struct RequestDirector {
     
     func createGetDetailRequest(_ productNumber: Int) -> MarketRequest? {
         let getDetailRequest = builder.setMethod(.get)
-            .setPath(URLPath.product.rawValue + "/\(productNumber)")
+            .setPath(URLPath.product + "/\(productNumber)")
             .buildRequest()
         
         return getDetailRequest
@@ -34,7 +34,7 @@ struct RequestDirector {
     func createPostRequest(with dataElement: [MultipartData]) -> MarketRequest? {
         let boundary = "Boundary-\(UUID().uuidString)"
         let postRequest = builder.setMethod(.post)
-            .setPath(URLPath.product.rawValue)
+            .setPath(URLPath.product)
             .setBody(MultipartManager.shared.makeBody(parameters: dataElement, boundary))
             .setHeaders(["Content-Type": "multipart/form-data; boundary=\(boundary)",
                          "identifier": VendorInfo.identifier])
@@ -45,7 +45,7 @@ struct RequestDirector {
     
     func createPatchRequest(productNumber: Int, dataElement: Data) -> MarketRequest? {    
         let patchRequest = builder.setMethod(.patch)
-            .setPath(URLPath.product.rawValue + "/\(productNumber)")
+            .setPath(URLPath.product + "/\(productNumber)")
             .setHeaders(["identifier": VendorInfo.identifier,
                          "Content-Type": "application/json"])
             .setBody(dataElement)
@@ -59,7 +59,7 @@ struct RequestDirector {
         guard let postData = parameters.data(using: .utf8) else { return nil }
         
         let deleteURIRequest = builder.setMethod(.post)
-            .setPath(URLPath.product.rawValue + "/\(productNumber)/archived")
+            .setPath(URLPath.product + "/\(productNumber)/archived")
             .setHeaders(["Content-Type": "application/json",
                          "identifier": VendorInfo.identifier])
             .setBody(postData)

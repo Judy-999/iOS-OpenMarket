@@ -59,15 +59,15 @@ final class ProductInfoViewController: UIViewController {
     
     @objc private func editProductButtonTapped() {
         let editAlert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let editAction = UIAlertAction(title: "수정", style: .default) { _ in
+        let editAction = UIAlertAction(title: Option.edit, style: .default) { _ in
             self.convertToEditView()
         }
         
-        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+        let deleteAction = UIAlertAction(title: Option.delete, style: .destructive) { _ in
             self.deleteAfterCheckSecret()
         }
         
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let cancelAction = UIAlertAction(title: Option.cancel, style: .cancel)
         
         [editAction, deleteAction, cancelAction].forEach {
             editAlert.addAction($0)
@@ -82,7 +82,7 @@ final class ProductInfoViewController: UIViewController {
                                            preferredStyle: .alert)
         checkAlert.addTextField()
         
-        let confirmAction = UIAlertAction(title: "확인", style: .default) { [self] _ in
+        let confirmAction = UIAlertAction(title: Option.confirm, style: .default) { [self] _ in
             let sessionManager = URLSessionManager()
             guard let inputSecret = checkAlert.textFields?.first?.text,
                   let productNumber = productNumber,
@@ -246,3 +246,11 @@ final class ProductInfoViewController: UIViewController {
     }
 }
 
+extension ProductInfoViewController {
+    private enum Option {
+        static let edit = "수정"
+        static let delete = "삭제"
+        static let cancel = "취소"
+        static let confirm = "확인"
+    }
+}

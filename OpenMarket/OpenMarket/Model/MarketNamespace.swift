@@ -14,3 +14,8 @@ enum MarketImage {
     static let option = UIImage(systemName: "ellipsis.circle")
     static let back = UIImage(systemName: "chevron.backward")
 }
+
+enum ProductImageInfo {
+    static let numberOfMax = 5
+    static let maximumCapacity = 300
+}
