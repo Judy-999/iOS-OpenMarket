@@ -33,8 +33,6 @@ final class MainViewController: UIViewController {
         segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
         segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.systemBlue], for: .normal)
         segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.layer.borderColor = UIColor.systemBlue.cgColor
-        segmentedControl.layer.borderWidth = 1.0
         return segmentedControl
     }()
     

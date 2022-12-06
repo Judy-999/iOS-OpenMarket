@@ -149,8 +149,8 @@ final class EditProductView: UIView {
     
     func configure(with data: ProductInfo) {
         productNameTextfield.text = data.name
-        priceTextfield.text = String(data.price)
-        discountedPriceTextfield.text = String(data.discountedPrice)
+        priceTextfield.text = data.price.convertToString
+        discountedPriceTextfield.text = data.discountedPrice.convertToString
         stockTextfield.text = String(data.stock)
         descriptionTextView.text = data.description
         segmentedControl.selectedSegmentIndex = data.currency.index
@@ -210,5 +210,15 @@ extension EditProductView {
         static let price = "상품 가격"
         static let discount = "할인 금액"
         static let stock = "재고 수량"
+    }
+}
+
+fileprivate extension Double {
+    var convertToString: String {
+        if self.truncatingRemainder(dividingBy: 1) == 0 {
+            return String(Int(self))
+        }
+        
+        return String(self)
     }
 }
