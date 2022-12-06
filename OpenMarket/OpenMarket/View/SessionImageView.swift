@@ -32,12 +32,14 @@ class SessionImageView: UIImageView {
         guard let imageURL = URL(string: imageURL) else { return }
         let imageRequest = URLRequest(url: imageURL)
                 
+        LoadingIndicator.showLoading(on: self)
         imageDataTask = URLSession.shared.dataTask(with: imageRequest) { data, _, error in
             if let data = data {
                 guard let imageData = UIImage(data: data) else { return }
                 
                 DispatchQueue.main.async {
                     self.image = imageData
+                    LoadingIndicator.hideLoading(on: self)
                 }
                 
                 ImageCacheManager.shared.setObject(imageData, forKey: key)
