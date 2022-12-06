@@ -77,7 +77,9 @@ final class ProductInfoViewController: UIViewController {
     }
     
     private func deleteAfterCheckSecret() {
-        let checkAlert = UIAlertController(title: "비밀번호 확인", message: "비밀번호를 입력해주세요.", preferredStyle: .alert)
+        let checkAlert = UIAlertController(title: AlertType.confirmPassword.title,
+                                           message: AlertType.confirmPassword.message,
+                                           preferredStyle: .alert)
         checkAlert.addTextField()
         
         let confirmAction = UIAlertAction(title: "확인", style: .default) { [self] _ in
@@ -99,11 +101,15 @@ final class ProductInfoViewController: UIViewController {
                                 self.navigationController?.popViewController(animated: true)
                             }
                         case .failure(_):
-                            self.showAlert(title: "서버 통신 실패", message: "상품을 삭제하지 못했습니다.")
+                            DispatchQueue.main.async {
+                                AlertManager(self).showAlert(.deleteFailure)
+                            }
                         }
                     }
                 case .failure(_):
-                    self.showAlert(title: "상품 삭제 실패", message: "비밀번호가 일치하지 않습니다.")
+                    DispatchQueue.main.async {
+                        AlertManager(self).showAlert(.incorrectPassword)
+                    }
                 }
             }
         }
@@ -167,7 +173,7 @@ final class ProductInfoViewController: UIViewController {
                 }
             case .failure(_):
                 DispatchQueue.main.async {
-                    self.showAlert(title: "서버 통신 실패", message: "데이터를 받아오지 못했습니다.")
+                    AlertManager(self).showAlert(.networkFailure)
                 }
             }
         }
@@ -196,15 +202,9 @@ final class ProductInfoViewController: UIViewController {
             self.images = productInfo.images.map { $0.url }
         } catch {
             DispatchQueue.main.async {
-                self.showAlert(title: "데이터 변환 실패", message: "가져온 데이터를 읽을 수 없습니다.")
+                AlertManager(self).showAlert(.decodingFailure)
             }
         }
-    }
-    
-    private func showAlert(title: String, message: String) {
-        let failureAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        failureAlert.addAction(UIAlertAction(title: "확인", style: .default))
-        self.present(failureAlert, animated: true)
     }
     
     // MARK: Layout
@@ -216,7 +216,7 @@ final class ProductInfoViewController: UIViewController {
             switch sectionKind {
             case .image:
                 let layoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                      heightDimension: .fractionalHeight(1.0))
+                                                        heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: layoutSize)
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                        heightDimension: .fractionalHeight(0.45))

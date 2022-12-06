@@ -118,7 +118,7 @@ final class EditProductViewController: UIViewController {
         guard requestProduct.productName.isEmpty == false,
               requestProduct.description.isEmpty == false,
               requestProduct.price != Double.zero else {
-            showAlert(title: "상품 등록 불가", message: "필수 항목을 입력해주십시오.\n(이름, 가격, 설명)")
+            AlertManager(self).showAlert(.unavailableProduct)
             return
         }
         
@@ -143,7 +143,10 @@ final class EditProductViewController: UIViewController {
                     self.navigationController?.popToRootViewController(animated: true)
                 }
             case .failure(_):
-                self.showAlert(title: "실패", message: "상품의 정보를 수정할 수 없습니다.")
+                DispatchQueue.main.async {
+                    AlertManager(self).showAlert(.patchFailure)
+                }
+                
             }
         }
     }
@@ -152,7 +155,7 @@ final class EditProductViewController: UIViewController {
         let images = Array(imageDataSource[1..<imageDataSource.count])
         
         guard images.isEmpty == false else {
-            showAlert(title: "상품 등록 불가", message: "최소 1장 이상의 사진을 넣어주십시오.")
+            AlertManager(self).showAlert(.nonExistentImage)
             return
         }
         
@@ -167,7 +170,9 @@ final class EditProductViewController: UIViewController {
                     self.navigationController?.popViewController(animated: true)
                 }
             case .failure(_):
-                self.showAlert(title: "서버 통신 실패", message: "데이터를 올리지 못했습니다.")
+                DispatchQueue.main.async {
+                    AlertManager(self).showAlert(.postFailure)
+                }
             }
         }
     }
@@ -191,14 +196,6 @@ extension EditProductViewController: UICollectionViewDataSource, UICollectionVie
             self.present(imagePicker, animated: true)
         }
     }
-    
-    private func showAlert(title: String, message: String) {
-        DispatchQueue.main.async {
-            let failureAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            failureAlert.addAction(UIAlertAction(title: "확인", style: .default))
-            self.present(failureAlert, animated: true)
-        }
-    }
 }
 
 //MARK: imagePickerController
@@ -206,7 +203,7 @@ extension EditProductViewController: UIImagePickerControllerDelegate, UINavigati
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard imageDataSource.count != ProductImageInfo.numberOfMax + 1 else {
             picker.dismiss(animated: true, completion: nil)
-            showAlert(title: "사진 등록 불가능", message: "사진은 최대 \(ProductImageInfo.numberOfMax)장까지 가능합니다.")
+            AlertManager(self).showAlert(.exceededNumberOfImages)
             return
         }
         

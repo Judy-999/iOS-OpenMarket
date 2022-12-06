@@ -132,7 +132,7 @@ final class MainViewController: UIViewController {
                 }
             case .failure(_):
                 DispatchQueue.main.async {
-                    self.showAlert(title: "서버 통신 실패", message: "데이터를 받아오지 못했습니다.")
+                    AlertManager(self).showAlert(.networkFailure)
                 }
             }
         }
@@ -145,15 +145,9 @@ final class MainViewController: UIViewController {
             self.products = page.pages.map { ProductItem(product: $0 ) }
         } catch {
             DispatchQueue.main.async {
-                self.showAlert(title: "데이터 변환 실패", message: "가져온 데이터를 읽을 수 없습니다.")
+                AlertManager(self).showAlert(.decodingFailure)
             }
         }
-    }
-    
-    private func showAlert(title: String, message: String) {
-        let failureAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        failureAlert.addAction(UIAlertAction(title: "확인", style: .default))
-        present(failureAlert, animated: true)
     }
     
     // MARK: Layout
