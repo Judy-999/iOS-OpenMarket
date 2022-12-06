@@ -94,14 +94,14 @@ extension MultipartManager {
     }
     
     private func compressImage(_ image: UIImage) -> Data {
-        guard var imageData = image.jpegData(compressionQuality: 1.0) else { return Data() }
+        var scale = 0.5
+        guard var imageData = image.jpegData(compressionQuality: scale) else { return Data() }
         var imageDataSize = imageData.count
-        var scale = 0.9
-        
+       
         while imageDataSize >= ProductImageInfo.maximumCapacity * 1024 {
+            scale -= 0.05
             imageData = image.jpegData(compressionQuality: scale) ?? Data()
             imageDataSize = imageData.count
-            scale -= 0.1
         }
         
         return imageData
