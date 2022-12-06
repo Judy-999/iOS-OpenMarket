@@ -14,10 +14,10 @@ struct RequestDirector {
         self.builder = builder
     }
     
-    func createGetRequest() -> MarketRequest? {
+    func createGetRequest(page: Int, itemCount: Int) -> MarketRequest? {
         let getRequest = builder.setMethod(.get)
             .setPath(URLPath.product.rawValue)
-            .setQuery([Query.page: 1, Query.itemPerPage: 100])
+            .setQuery([Query.page: page, Query.itemPerPage: itemCount])
             .buildRequest()
         
         return getRequest

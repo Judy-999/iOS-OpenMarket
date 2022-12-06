@@ -21,6 +21,8 @@ final class MainViewController: UIViewController {
     private lazy var dataSource = makeDataSource(for: .list)
     private var collectionView: UICollectionView!
     private var products: [ProductItem] = []
+    private var itemSnapshot = SnapShot()
+    private var pageOffset = 1
     
     // MARK: UI
     private let segmentedControl: UISegmentedControl = {
@@ -37,13 +39,12 @@ final class MainViewController: UIViewController {
     }()
     
     override func viewDidAppear(_ animated: Bool) {
-        receivePageData()
+        receivePageData(isUpdate: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        receivePageData()
         addAction()
     }
     
@@ -77,7 +78,7 @@ final class MainViewController: UIViewController {
         
         dataSource = makeDataSource(for: layoutType)
         collectionView.collectionViewLayout = createLayout(for: layoutType)
-        receivePageData()
+        receivePageData(isUpdate: true)
     }
     
     @objc private func addProductButtonTapped() {
@@ -111,14 +112,18 @@ final class MainViewController: UIViewController {
     
     // MARK: Data & Snapshot
     private func applySnapshots() {
-        var itemSnapshot = SnapShot()
+        itemSnapshot.deleteAllItems()
         itemSnapshot.appendSections([.main])
         itemSnapshot.appendItems(products)
         dataSource.apply(itemSnapshot, animatingDifferences: false)
     }
     
-    private func receivePageData() {
-        guard let getRequest = RequestDirector().createGetRequest() else { return }
+    private func receivePageData(isUpdate: Bool = false, _ page: Int = 1, itemCount: Int = 100) {
+        guard let getRequest = RequestDirector().createGetRequest(page: page,
+                                                                  itemCount: itemCount) else { return }
+        if isUpdate {
+            products.removeAll()
+        }
         
         LoadingIndicator.showLoading(on: view)
         URLSessionManager().dataTask(request: getRequest) { result in
@@ -142,7 +147,9 @@ final class MainViewController: UIViewController {
         do {
             let page = try DataManager().decode(type: Page.self, data: data)
             
-            self.products = page.pages.map { ProductItem(product: $0 ) }
+            let receivedPage = page.pages.map { ProductItem(product: $0) }
+            self.products.append(contentsOf: receivedPage)
+            
         } catch {
             DispatchQueue.main.async {
                 AlertManager(self).showAlert(.decodingFailure)
@@ -178,6 +185,16 @@ extension MainViewController: UICollectionViewDelegate {
         productInfoViewController.receiveProductInfo(number: products[indexPath.row].id,
                                                      name: products[indexPath.row].name)
         self.navigationController?.pushViewController(productInfoViewController, animated: true)
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let presentScrollOffset = scrollView.contentOffset.y
+        let scrollSpace = scrollView.contentSize.height - scrollView.bounds.height
+        
+        if presentScrollOffset > scrollSpace {
+            pageOffset += 1
+            receivePageData(pageOffset)
+        }
     }
 }
 
