@@ -187,7 +187,9 @@ extension EditProductViewController: UICollectionViewDataSource, UICollectionVie
     func collectionView( _ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withClass: AddImageCollectionViewCell.self,
                                                       for: indexPath)
-        cell.configure(with: imageDataSource[indexPath.item])
+        let isAddImage = viewMode == .add && indexPath.row == 0
+        cell.configure(with: imageDataSource[indexPath.item],
+                       isAddImage: isAddImage)
         return cell
     }
     

@@ -38,7 +38,12 @@ final class AddImageCollectionViewCell: UICollectionViewCell {
         ])
     }
 
-    func configure(with image: UIImage) {
+    func configure(with image: UIImage, isAddImage: Bool) {
+        if isAddImage {
+            productImage.contentMode = .scaleAspectFit
+            productImage.tintColor = .black
+        }
+        
         productImage.image = image
     }
 }
