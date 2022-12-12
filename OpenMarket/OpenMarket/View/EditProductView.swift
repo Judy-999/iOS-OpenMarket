@@ -195,11 +195,11 @@ final class EditProductView: UIView {
                 .constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             
             collectionView.heightAnchor
-                .constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, multiplier: 0.2),
+                .constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, multiplier: 1/5),
             segmentedControl.widthAnchor
-                .constraint(equalTo: self.safeAreaLayoutGuide.widthAnchor, multiplier: 0.3),
+                .constraint(equalTo: self.safeAreaLayoutGuide.widthAnchor, multiplier: 3/10),
             infoStackView.heightAnchor
-                .constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, multiplier: 0.2)
+                .constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, multiplier: 1/5)
         ])
     }
 }

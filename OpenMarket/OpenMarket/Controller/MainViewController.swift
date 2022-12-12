@@ -116,7 +116,7 @@ final class MainViewController: UIViewController {
         dataSource.apply(itemSnapshot, animatingDifferences: false)
     }
     
-    private func receivePageData(isUpdate: Bool = false, _ page: Int = 1, itemCount: Int = 100) {
+    private func receivePageData(isUpdate: Bool = false, _ page: Int = 1, itemCount: Int = 50) {
         guard let getRequest = RequestDirector().createGetRequest(page: page,
                                                                   itemCount: itemCount) else { return }
         if isUpdate {
@@ -223,9 +223,9 @@ extension MainViewController {
         var groupSizeHeight: CGFloat {
             switch self {
             case .list:
-                return 0.08
+                return 1/10
             case .grid:
-                return 0.35
+                return 3/10
             }
         }
         

@@ -68,7 +68,7 @@ final class ProductImageCollectionViewCell: UICollectionViewCell {
             entireStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             entireStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            imageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.9)
+            imageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 9/10)
         ])
     }
 }

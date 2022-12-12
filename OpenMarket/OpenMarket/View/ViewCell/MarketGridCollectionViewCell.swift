@@ -97,7 +97,7 @@ final class MarketGridCollectionViewCell: UICollectionViewCell, MarketCollection
                 .constraint(equalTo: contentView.leadingAnchor, constant: 8),
             
             imageView.heightAnchor
-                .constraint(equalTo: contentView.heightAnchor, multiplier: 0.58)
+                .constraint(equalTo: contentView.heightAnchor, multiplier: 6/10)
         ])
     }
 

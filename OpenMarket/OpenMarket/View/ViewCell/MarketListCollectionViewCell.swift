@@ -151,7 +151,7 @@ final class MarketListCollectionViewCell: UICollectionViewCell, MarketCollection
                 .constraint(equalTo: imageView.heightAnchor, multiplier: 1),
             
             accessaryImageView.widthAnchor
-                .constraint(equalTo: contentView.heightAnchor, multiplier: 0.2)
+                .constraint(equalTo: contentView.heightAnchor, multiplier: 1/10)
         ])
     }
         
