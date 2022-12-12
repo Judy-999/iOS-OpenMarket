@@ -107,7 +107,7 @@ final class EditProductViewController: UIViewController {
     }
     
     //MARK: buttonAction
-    @objc private func cancelButtonDidTap() {
+    @objc private func cancelButtonTapped() {
         self.navigationController?.popViewController(animated: true)
     }
     
